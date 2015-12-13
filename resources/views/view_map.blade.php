@@ -21,20 +21,20 @@
     <div class="row">
         <div class="col-sm-6">
             <p>สถานีตรวจวัดปริมาณฝน</p>
-            <h3 class="station-name"><b>แม่ฮ่องสอน</b></h3>
+            <h3 class="station-name"><b>{{$info_station['station_name']}}</b></h3>
             <div>
                 <table class="table text-left">
                     <tr>
                         <th>ตำบล</th>
-                        <td>ห้วยผา</td>
+                        <td>{{$info_station['sub_district']}}</td>
                     </tr>
                     <tr>
                         <th>อำเภอ</th>
-                        <td>เมืองแม่ฮ่องสอน</td>
+                        <td>{{$info_station['district']}}</td>
                     </tr>
                     <tr>
                         <th>จังหวัด</th>
-                        <td>แม่ฮ่องสอน</td>
+                        <td>{{$info_station['province']}}</td>
                     </tr>
                     <!-- <b>ตำบล</b> ห้วยผา<br>
                     <b>อำเภอ</b> เมืองแม่ฮ่องสอน<br>
