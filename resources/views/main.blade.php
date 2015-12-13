@@ -5,17 +5,17 @@
     <h1>ระบบพยากรณ์ปริมาณฝนในประเทศไทย</h1>
     <p>โดยวิธี Data Mining บนข้อมูลภูมิอากาศจาก CFSv2 และข้อมูลฝนกรมจากอุตุนิยมวิทยา</p>
     <br>
-    <a class="btn btn-default">ดูรายละเอียดการพยากรณ์ &raquo;</a>
+    <a class="btn btn-default" href="{{url().'/forecast'}}">ดูผลการพยากรณ์ &raquo;</a>
 @stop
 
 
 @section('divider')
-<hr>
+{{-- <hr> --}}
 @stop
 
 
 @section('content')
-<div class="col-sm-4" style="background-color:#eee; height:500px;">
+{{-- <div class="col-sm-4" style="background-color:#eee; height:500px;">
     asdf;lkajsdf;lkj
 </div>
 <div class="col-sm-4" style="background-color:#ddd; height:500px;">
@@ -23,5 +23,5 @@
 </div>
 <div class="col-sm-4" style="background-color:#eee; height:500px;">
     asdf;lkajsdf;lkj
-</div>
+</div> --}}
 @stop

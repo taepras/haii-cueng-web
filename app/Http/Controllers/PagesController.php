@@ -27,15 +27,17 @@ class PagesController extends Controller
        return view('view_map',compact('info_station'));
    }
 
-   public function results($station_id){
-       return view('results');
+   public function results(){
+       return view('view_test');
    }
 
    public function methodology(){
-       return view('methodology');
+    //    return view('methodology');
+       return view('main');
    }
 
    public function about(){
-       return view('about');
+    //    return view('about');
+       return view('main');
    }
 }
