@@ -1,0 +1,67 @@
+*{font-family: 'boon', sans-serif;}
+p,th,td,li,label{font-size: 12pt;}
+sup,sub{font-size: 9pt !important;}
+h1{font-size: 32pt;}
+h2{font-size: 28pt;}
+h3{font-size: 24pt;}
+h4{font-size: 14pt;}
+h5{font-size: 13pt;}
+h6{font-size: 12pt;}
+.navbar .navbar-nav {
+    display: inline-block;
+    float: none;
+    padding-top:20px;
+}
+.navbar-default{
+    background-color: transparent;
+    border: none;
+}
+.navbar .navbar-collapse {
+    text-align: center;
+}
+.page{
+    text-align: center;
+}
+header{
+    padding:20px 0 50px;
+    margin-bottom:20px;
+}
+footer{
+    padding:20px 0 50px;
+    margin-top:20px;
+}
+hr{border-color:#ccc;}
+.main-content{
+    border-top:1px #ccc solid;
+    border-bottom:1px #ccc solid;
+    padding:30px;
+}
+.container{
+    max-width:960px;
+}
+.huge-text{
+    font-size: 60pt;
+    line-height: 70%;
+}
+.div-center{
+    margin:auto;
+}
+.dropdown-menu{
+    border:none
+}
+.station-name{
+    line-height: 100%;
+    margin-top:0;
+}
+svg{max-width:100%}
+.choose-date-label{
+    font-weight: normal;
+}
+
+.droplet{
+    color:#459cea;
+}
+
+.no-droplet{
+    color:#ddd;
+}

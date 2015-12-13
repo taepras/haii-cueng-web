@@ -12,6 +12,13 @@
 */
 
 Route::get('/', 'PagesController@main');
+Route::get('/forecast', 'PagesController@viewForecast');
+Route::get('/forecast/{station_id}', 'PagesController@viewForecastStation');
+Route::get('/methodology', 'PagesController@methodology');
+Route::get('/test_results', 'PagesController@results');
+Route::get('/about', 'PagesController@About');
+
+
 
 Route::get('d/{page}', function ($page) {
    return view($page);
