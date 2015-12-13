@@ -12,6 +12,7 @@
     <link href="{{url().'/fonts/boon.css'}}" rel="stylesheet" type="text/css">
     <script src="{{url().'/js/d3.min.js'}}" charset="utf-8"></script>
     <script src="{{url().'/js/c3.min.js'}}"></script>
+    <script src="{{url().'/js/dimple.latest.min.js'}}"></script>
 </head>
 <body>
     <nav class="navbar navbar-default">

@@ -3,7 +3,12 @@
 
 @section('page-header')
 <h1>ผลการพยากรณ์</h1>
-<p>ผลการพยากรณ์ปริมาณฝน ณ วันที่ xx-xx-xx</a></p>
+<form role="form" class="form-inline">
+    <label class="choose-date-label">เลือกดูปริมาณฝน ณ วันที่&nbsp;&nbsp;</label>
+    <input type="date" class="form-control">
+    &nbsp;&nbsp;
+    <button type="submit" class="btn btn-default">ดูข้อมูล &raquo;</button>
+</form>
 @stop
 
 
@@ -13,17 +18,6 @@
     <div id="chart"></div>
 </div>
 <div class="col-sm-7">
-    <div class="row">
-        <div class="col-sm-12">
-            <form role="form" class="form-inline">
-                <label class="choose-date-label">เลือกดูปริมาณฝน ณ วันที่&nbsp;&nbsp;</label>
-                <input type="date" class="form-control">
-                &nbsp;&nbsp;
-                <button type="submit" class="btn btn-default">ดูข้อมูล &raquo;</button>
-            </form>
-        </div>
-    </div>
-    <hr>
     <div class="row">
         <div class="col-sm-6">
             <p>สถานีตรวจวัดปริมาณฝน</p>
@@ -55,7 +49,7 @@
             </p>
             <h1 class="huge-text" id="rainfall">52.7</h1>
             <p>
-                มิลลิเมตร{{--<sup><a href="">[?]</a></sup>--}}
+                มิลลิเมตร<sup><a href="">[?]</a></sup>
                 <span id="droplets"></span>
             </p>
             <a href="{{url().'/forecast/300201'}}" class="btn btn-primary">
@@ -72,8 +66,8 @@
                 <thead>
                     <tr>
                         <th>ชื่อตัวแปร</th>
-                        <th>ระดับความสูง{{--<sup><a href="">[?]</a></sup>--}}</th>
-                        <th>เวลา{{--<sup><a href="">[?]</a></sup>--}}</th>
+                        <th>ระดับความสูง<sup><a href="">[?]</a></sup></th>
+                        <th>เวลา<sup><a href="">[?]</a></sup></th>
                         <th>ค่าที่ได้</th>
                     </tr>
                 </thead>
@@ -187,42 +181,122 @@ $(document).ready(function(){
     $('#droplets').html(dropletString);
 });
 
-var svg = dimple.newSvg("#chart", 380, 700);
-d3.csv("{{url().'/csv/mockweb.csv'}}", function (data) {
-    var myChart = new dimple.chart(svg, data);
-    myChart.setMargins("40px", "20px", "10px", "40px");
-    var x = myChart.addMeasureAxis("x", "long");
-    var y = myChart.addMeasureAxis("y", "lat");
-    var z = myChart.addMeasureAxis("z", "rainfall");
-    var c = myChart.addMeasureAxis("c", "rainfall");
-    //var c = myChart.addMeasureAxis("c", 0);
+// var chart = c3.generate({
+//     data: {
+//         x: 'long',
+//         ys: {
+//             lat: 'lat',
+//             name_e: 'name_e'
+//         },
+//         url: '{{url().'/csv/stations.csv'}}',
+//         hide: ['code', 'name_e', 'name_th'],
+//         type: 'scatter'
+//     },
+//     color: 'blue',
+//     point: {
+//         r: function(d) {
+//             //console.log(chart.data('name_e'));
+//             return d.value;
+//         }
+//     },
+//     axis: {
+//         x: {
+//             label: 'longitude',
+//             position: 'outer-center',
+//             tick: {count: 3}
+//         },
+//         y: {
+//             label: 'latitude',
+//             position: 'outer-center'
+//         }
+//     },
+//     size: {
+//         height: 700,
+//         width: 360
+//     },
+//     tooltip: {
+//         format: {
+//             title: function (d) {
+//                 console.log();
+//                 return 'Data ' + d;
+//             },
+//             contents: function(d){
+//                 console.log(d);
+//                 return d;
+//             }
+//             // value: function (value, ratio, id) {
+//             //     var format = id === 'data1' ? d3.format(',') : d3.format('$');
+//             //     return format(value);
+//             // }
+//         }
+//     },
+// });
 
-    // myChart.defaultColors = [
-    //       new dimple.color("#3498db", "#2980b9", 1), // blue
-    //       new dimple.color("#e74c3c", "#c0392b", 1), // red
-    //       new dimple.color("#2ecc71", "#27ae60", 1), // green
-    //       new dimple.color("#9b59b6", "#8e44ad", 1), // purple
-    //       new dimple.color("#e67e22", "#d35400", 1), // orange
-    //       new dimple.color("#f1c40f", "#f39c12", 1), // yellow
-    //       new dimple.color("#1abc9c", "#16a085", 1), // turquoise
-    //       new dimple.color("#95a5a6", "#7f8c8d", 1)  // gray
-    //   ];
 
-    myChart.defaultColors = [
-        new dimple.color("#459cea", "#459cea", 1), // blue
-        //new dimple.color("rgba(59, 156, 234, 0.5)", "rgba(59, 156, 234, 0.5)", 1), // blue
-    ];
+//------------------------------------------------------------------------------------------------
 
-    x.overrideMin = 97;
-    x.overrideMax = 105;
-    y.overrideMin = 6;
-    y.overrideMax = 20;
-    z.overrideMin = -3;
-    z.overrideMax = 60;
-
-    myChart.addSeries(["lat", "code"], dimple.plot.bubble);
-    myChart.addLegend(180, 10, 360, 20, "right");
-    myChart.draw();
+d3.csv("{{url().'/csv/stations.csv'}}", function(csv) {
+    // csv = csv.filter(function(key) {
+    //     return key != "Sex" && key != "L" && key != "M" && key != "S" ;
+    // });
+    console.log(csv);
+    var chart = c3.generate({
+        data: {
+            json: csv,
+            keys: {
+                x: 'long',
+                value: ['lat', 'name_e', 'code'],
+            },
+            type: 'scatter',
+            onclick: function(d){
+                console.log(d);
+            }
+        },
+        color: 'blue',
+        point: {
+            r: function(d) {
+                // console.log(csv[d.index]);
+                // console.log(this.data_json[d.index]);
+                return (csv[d.index].long-96)*2;
+            }
+        },
+        axis: {
+            x: {
+                label: 'longitude',
+                position: 'outer-center',
+                tick: {count: 3}
+            },
+            y: {
+                label: 'latitude',
+                position: 'outer-center'
+            }
+        },
+        size: {
+            height: 700,
+            width: 360
+        },
+        tooltip: {
+            format: {
+                name: function (name, ratio, id, index) {
+                    console.log(name);
+                    console.log(ratio);
+                    console.log(id);
+                    console.log(index);
+                    console.log(csv[index]);
+                    return 'Data ' + name;
+                },
+                contents: function(d){
+                    console.log(d);
+                    return d;
+                }
+                // value: function (value, ratio, id) {
+                //     var format = id === 'data1' ? d3.format(',') : d3.format('$');
+                //     return format(value);
+                // }
+            }
+        }
+    });
 });
+
 </script>
 @stop
