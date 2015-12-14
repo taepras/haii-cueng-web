@@ -11,9 +11,9 @@
 <div class="col-sm-12">
     <form role="form" class="form-inline">
         <label class="choose-date-label">ปริมาณฝน ตั้งแต่วันที่&nbsp;&nbsp;</label>
-        <input type="date" class="form-control">
+        <input type="date" class="form-control" id="start_date">
         <label class="choose-date-label">&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;</label>
-        <input type="date" class="form-control">
+        <input type="date" class="form-control" id="end_date">
         &nbsp;&nbsp;
         <button type="submit" class="btn btn-primary">ดูข้อมูล &raquo;</button>
     </form>
@@ -42,11 +42,11 @@
                     </tr>
                     <tr>
                         <th>ข้อมูลตั้งแต่วันที่</th>
-                        <td>xx-xx-xx</td>
+                        {{-- <td>{{date("d/m/Y", strtotime($start_date))}}</td> --}}
                     </tr>
                     <tr>
                         <th>ข้อมูลถึงวันที่</th>
-                        <td>xx-xx-xx</td>
+                        {{-- <td>{{date("d/m/Y", strtotime($end_date))}}</td> --}}
                     </tr>
                     <!-- <b>ตำบล</b> ห้วยผา<br>
                     <b>อำเภอ</b> เมืองแม่ฮ่องสอน<br>
@@ -170,18 +170,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Pressure</td>
-                        <td><input type="checkbox" value="t00.pressure.meansea"></td>
-                        <td><input type="checkbox" value="t06.pressure.meansea"></td>
-                        <td><input type="checkbox" value="t12.pressure.meansea"></td>
-                        <td><input type="checkbox" value="t18.pressure.meansea"></td>
-                        <td><input type="checkbox" value="t00.pressure.surface"></td>
-                        <td><input type="checkbox" value="t06.pressure.surface"></td>
-                        <td><input type="checkbox" value="t12.pressure.surface"></td>
-                        <td><input type="checkbox" value="t18.pressure.surface"></td>
-                    </tr>
-                </tbody>
+                        <tr>
+                            <td>Pressure</td>
+                            <td><input type="checkbox" value="t00.pressure.meansea"></td>
+                            <td><input type="checkbox" value="t06.pressure.meansea"></td>
+                            <td><input type="checkbox" value="t12.pressure.meansea"></td>
+                            <td><input type="checkbox" value="t18.pressure.meansea"></td>
+                            <td><input type="checkbox" value="t00.pressure.surface"></td>
+                            <td><input type="checkbox" value="t06.pressure.surface"></td>
+                            <td><input type="checkbox" value="t12.pressure.surface"></td>
+                            <td><input type="checkbox" value="t18.pressure.surface"></td>
+                        </tr>
+                    </tbody>
                 </table>
                 <button type="submit" class="btn btn-primary btn-block">ดูกราฟของตัวแปรที่เลือก &raquo;</button>
             </form>
@@ -195,13 +195,28 @@
 @section('script')
 <script>
 $(document).ready(function(){
+    @if(isset($station_id))
+    $('#station').val("{{$station_id}}");
+    @endif
+    @if(isset($start_date))
+    $('#start_date').val("{{$start_date}}");
+    @endif
+    @if(isset($end_date))
+    $('#end_date').val("{{$end_date}}");
+    @endif
 });
 
 var chart = c3.generate({
     data: {
         x: 'date',
+        // json: {!! json_encode($b) !!},
         url: '{{url().'/test/300201_edited_s.csv'}}',
         type: 'line',
+        // keys: {
+        //     x: 'date', // it's possible to specify 'x' when category axis
+        //     value: ['gph200_0', 'gph850_0'],
+        // }
+        // show: ['value']
         hide: ['mintemp', 'maxtemp']
     },
     axis: {
