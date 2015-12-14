@@ -40,13 +40,31 @@ class PagesController extends Controller
    }*/
 
    public function results(){
-       return view('view_test');
+       $info_station = null;
+       $variable_station = null;
+       return view('view_test')->with('variable_station',$variable_station)->with('info_station',$info_station);
    }
+
+    public function resultsPost(){
+        $station_id = Input::get('id');
+        $start_date = Input::get('start_date');
+        $end_date = Input::get('end_date');
+        $a = \App\StationInfo::where('station_id','=',$station_id)->first();
+        $info_station = json_decode($a,true);
+        $b = \App\CFSV2::where('station_id','=',$station_id)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
+        $variable_station = json_decode($b,true);
+        return view('view_test')->with('variable_station',$variable_station)->with('info_station',$info_station);
+    }
 
    public function methodology(){
     //    return view('methodology');
        return view('main');
    }
+
+    public function viewStation(){
+        //    return view('methodology');
+        return view('view_station');
+    }
 
    public function about(){
     //    return view('about');
