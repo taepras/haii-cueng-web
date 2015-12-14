@@ -59,7 +59,33 @@ class PagesController extends Controller
 
         $b = \App\CFSV2::select('date', 'gph200_0', 'gph850_0')->where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
         $variable_station = json_decode($b,true);
-        return view('view_station')->with('b',$b)->with('info_station',$info_station)->with('variable_station',$variable_station);
+        return view('view_station')->with('b',$b)
+            ->with('info_station',$info_station)
+            ->with('variable_station',$variable_station)
+            ->with('station_id',$station_id)
+            ->with('start_date',$start_date)
+            ->with('end_date',$end_date);
+    }
+
+    public function viewForecastStationPost($station_id){
+        // $start_date = Input::get('start_date');
+        // $end_date = Input::get('end_date');
+
+        // TEST sending json to view
+        $start_date = Input::get('start_date');
+        $end_date = Input::get('end_date');
+        $a = \App\StationInfo::where('station_id','=',$station_id)->first();
+
+        $info_station = json_decode($a,true);
+
+        $b = \App\CFSV2::select('date', 'gph200_0', 'gph850_0')->where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
+        $variable_station = json_decode($b,true);
+        return view('view_station')->with('b',$b)
+            ->with('info_station',$info_station)
+            ->with('variable_station',$variable_station)
+            ->with('station_id',$station_id)
+            ->with('start_date',$start_date)
+            ->with('end_date',$end_date);
     }
 
     public function results(){

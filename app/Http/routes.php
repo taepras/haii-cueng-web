@@ -20,6 +20,7 @@ Route::get('/about', 'PagesController@About');
 Route::get('/station', 'PagesController@viewStation');
 
 Route::post('/forecast', 'PagesController@viewForecastPost');
+Route::post('/forecast/{station_id}', 'PagesController@viewForecastStationPost');
 Route::post('/test_results','PagesController@resultsPost');
 
 

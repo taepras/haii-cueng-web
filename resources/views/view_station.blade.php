@@ -8,13 +8,14 @@
 
 
 @section('content')
-<form role="form">
+<form role="form" method="post" action="{{url().'/forecast/'.$station_id}}">
+    {{csrf_field()}}
     <div class="col-sm-12">
         <div class="form-inline">
             <label class="choose-date-label">ปริมาณฝน ตั้งแต่วันที่&nbsp;&nbsp;</label>
-            <input type="date" class="form-control" id="start_date">
+            <input type="date" class="form-control" name="start_date" id="start_date">
             <label class="choose-date-label">&nbsp;&nbsp;ถึงวันที่&nbsp;&nbsp;</label>
-            <input type="date" class="form-control" id="end_date">
+            <input type="date" class="form-control" name="end_date" id="end_date">
             &nbsp;&nbsp;
             <button type="submit" class="btn btn-primary">ดูข้อมูล &raquo;</button>
         </div>
@@ -26,28 +27,28 @@
         <div class="row">
             <div class="col-sm-5">
                 <p>สถานีตรวจวัดปริมาณฝน</p>
-                <h3 class="station-name"><b>แม่ฮ่องสอน</b></h3>
+                <h3 class="station-name"><b>{{$info_station['station_name']}}</b></h3>
                 <div>
                     <table class="table text-left">
                         <tr>
                             <th>ตำบล</th>
-                            <td>ห้วยผา</td>
+                            <td>{{$info_station['sub_district']}}</td>
                         </tr>
                         <tr>
                             <th>อำเภอ</th>
-                            <td>เมืองแม่ฮ่องสอน</td>
+                            <td>{{$info_station['district']}}</td>
                         </tr>
                         <tr>
                             <th>จังหวัด</th>
-                            <td>แม่ฮ่องสอน</td>
+                            <td>{{$info_station['province']}}</td>
                         </tr>
                         <tr>
                             <th>ข้อมูลตั้งแต่วันที่</th>
-                            {{-- <td>{{date("d/m/Y", strtotime($start_date))}}</td> --}}
+                            <td>{{date("d/m/Y", strtotime($start_date))}}</td>
                         </tr>
                         <tr>
                             <th>ข้อมูลถึงวันที่</th>
-                            {{-- <td>{{date("d/m/Y", strtotime($end_date))}}</td> --}}
+                            <td>{{date("d/m/Y", strtotime($end_date))}}</td>
                         </tr>
                         <!-- <b>ตำบล</b> ห้วยผา<br>
                         <b>อำเภอ</b> เมืองแม่ฮ่องสอน<br>
