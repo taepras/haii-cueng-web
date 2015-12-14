@@ -155,8 +155,8 @@ class PagesController extends Controller
     }
 
     public function methodology(){
-        //    return view('methodology');
-        return view('main');
+        return view('methodology');
+        // return view('main');
     }
 
     public function viewStation(){
