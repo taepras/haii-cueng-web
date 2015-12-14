@@ -15,11 +15,16 @@ class PagesController extends Controller
    }
 
    public function viewForecast(){
-       return view('view_map');
+       //$info_station = "AAA";
+       $a = \App\StationInfo::where('station_id','=','300201')->first();
+       $info_station = json_decode($a,true);
+       return view('view_map',compact('info_station'));
    }
 
    public function viewForecastStation($station_id){
-       return view('view_station');
+       $a = \App\StationInfo::where('station_id','=',$station_id)->first();
+       $info_station = json_decode($a,true);
+       return view('view_map',compact('info_station'));
    }
 
    public function results(){
