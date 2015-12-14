@@ -3,7 +3,7 @@
 
 @section('page-header')
 <h1>ผลการทดสอบ  </h1>
-<p>ผลการทดสอบการพยากรณ์ปริมาณฝน ณ สถานีตรวจวัดปริมาณน้ำฝน {{$info_station['station_name']}}</p>
+<p>ผลการทดสอบการพยากรณ์ปริมาณฝน ณ สถานีตรวจวัดปริมาณน้ำฝน <b>{{$info_station['station_name']}}</b></p>
 @stop
 
 
@@ -148,11 +148,11 @@
         <div class="form-group">
             <label class="choose-date-label col-sm-3">ปริมาณฝน ตั้งแต่วันที่</label>
             <div class="col-sm-4">
-                <input type="date" class="form-control" name="start_date">
+                <input type="date" class="form-control" name="start_date" id="start_date">
             </div>
             <label class="choose-date-label col-sm-1">ถึง</label>
             <div class="col-sm-4">
-                <input type="date" class="form-control" name="end_date">
+                <input type="date" class="form-control" name="end_date" id="end_date">
             </div>
         </div>
         {{-- &nbsp;&nbsp; --}}
@@ -174,10 +174,10 @@
 <div class="col-sm-3 text-center">
     <h4><b>ค่าสถิติของส่วนที่เลือก</b></h4>
     <p>F1 Score</p>
-    <h1 class="huge-text">0.78</h1>
+    <h1 class="huge-text">{{$f1_score}}</h1>
     <hr>
     <p>Root Mean Square Error (RMSE)</p>
-    <h1 class="huge-text">9.81</h1>
+    <h1 class="huge-text">{{$rmse}}</h1>
     <p>มิลลิเมตร</p>
     <hr>
     <p>F1 Score เฉลี่ยของ Model <b>0.78</b></p>
@@ -191,6 +191,15 @@
 @section('script')
 <script>
 $(document).ready(function(){
+    @if(isset($station_id))
+        $('#station').val("{{$station_id}}");
+    @endif
+    @if(isset($start_date))
+        $('#start_date').val("{{$start_date}}");
+    @endif
+    @if(isset($end_date))
+        $('#end_date').val("{{$end_date}}");
+    @endif
 });
 
 var chart = c3.generate({

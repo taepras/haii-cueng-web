@@ -3,7 +3,7 @@
 
 @section('page-header')
 <h1>ผลการพยากรณ์</h1>
-<p>ผลการพยากรณ์ปริมาณฝน ณ วันที่ {{$variable_station['date']}} </a></p>
+<p>ผลการพยากรณ์ปริมาณฝน ณ วันที่ {{date("d/m/Y", strtotime($date))}} </a></p>
 @stop
 
 
@@ -144,7 +144,7 @@
                     <option value="532201">RANONG ระนอง</option>
                 </select>
                 <label class="choose-date-label">&nbsp;&nbsp;วันที่&nbsp;&nbsp;</label>
-                <input type="date" class="form-control" name="date">
+                <input type="date" class="form-control" name="date" id="date">
                 &nbsp;&nbsp;
                 <button type="submit" class="btn btn-primary">ดูข้อมูล &raquo;</button>
             </form>
@@ -185,14 +185,14 @@
         <div class="col-sm-6">
             <p>
                 ผลการพยากรณ์<br>
-                ปริมาณฝน ณ วันที่ {{$variable_station['date']}}
+                ปริมาณฝน ณ วันที่ {{date("d/m/Y", strtotime($date))}}
             </p>
             <h1 class="huge-text" id="rainfall">{{$variable_station['predict_rainfall']}}</h1>
             <p>
                 มิลลิเมตร{{--<sup><a href="">[?]</a></sup>--}}
                 <span id="droplets"></span>
             </p>
-            <a href="{{url().'/forecast/300201'}}" class="btn btn-success btn-block">
+            <a href="{{url().'/forecast/'.$station_id}}" class="btn btn-success btn-block">
                 ดูผลการพยากรณ์ของสถานีนี้ &raquo;
             </a>
         </div>
@@ -296,6 +296,13 @@
 @section('script')
 <script>
 $(document).ready(function(){
+    @if(isset($station_id))
+        $('#station').val("{{$station_id}}");
+    @endif
+    @if(isset($date))
+        $('#date').val("{{$date}}");
+    @endif
+
     var rainfall = parseInt($('#rainfall').text());
     var droplets = 0;
     var dropletString = ""
