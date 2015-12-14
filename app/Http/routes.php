@@ -18,6 +18,8 @@ Route::get('/methodology', 'PagesController@methodology');
 Route::get('/test_results', 'PagesController@results');
 Route::get('/about', 'PagesController@About');
 
+Route::post('/forecast', 'PagesController@viewForecastPost');
+
 
 
 Route::get('d/{page}', function ($page) {

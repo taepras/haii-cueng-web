@@ -26,8 +26,8 @@ return [
     |
     */
 
-    'default' => 'sqlite',
-
+    'default' => env('connections','mysql'),
+    //'default' => 'sqlite',
     /*
     |--------------------------------------------------------------------------
     | Database Connections
