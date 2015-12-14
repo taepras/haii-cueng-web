@@ -17,9 +17,10 @@ Route::get('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::get('/methodology', 'PagesController@methodology');
 Route::get('/test_results', 'PagesController@results');
 Route::get('/about', 'PagesController@About');
+Route::get('/station', 'PagesController@viewStation');
 
 Route::post('/forecast', 'PagesController@viewForecastPost');
-
+Route::post('/test_results','PagesController@resultsPost');
 
 
 Route::get('d/{page}', function ($page) {

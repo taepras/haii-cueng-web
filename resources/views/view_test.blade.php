@@ -3,17 +3,18 @@
 
 @section('page-header')
 <h1>ผลการทดสอบ  </h1>
-<p>ผลการทดสอบการพยากรณ์ปริมาณฝน ณ สถานีตรวจวัดปริมาณน้ำฝน [[ชื่อสถานี]]</p>
+<p>ผลการทดสอบการพยากรณ์ปริมาณฝน ณ สถานีตรวจวัดปริมาณน้ำฝน {{$info_station['station_name']}}</p>
 @stop
 
 
 @section('content')
 <div class="col-sm-8 col-sm-offset-2">
-    <form class="form-horizontal text-left">
+    <form class="form-horizontal text-left" method="post" action="{{url().'/test_results'}}">
+        {{csrf_field()}}
         <div class="form-group">
             <label class="col-sm-3">เลือกสถานี</label>
             <div class="col-sm-9">
-                <select class="form-control" id="station">
+                <select class="form-control" id="station" name="id">
                     <option>--เลือกสถานี--</option>
                     <option value="376202">MAE SOT แม่สอด</option>
                     <option value="376301">DOI MUSOE ดอยมูเซอ (1)</option>
@@ -147,11 +148,11 @@
         <div class="form-group">
             <label class="choose-date-label col-sm-3">ปริมาณฝน ตั้งแต่วันที่</label>
             <div class="col-sm-4">
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" name="start_date">
             </div>
             <label class="choose-date-label col-sm-1">ถึง</label>
             <div class="col-sm-4">
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" name="end_date">
             </div>
         </div>
         {{-- &nbsp;&nbsp; --}}
@@ -180,7 +181,9 @@
     <p>มิลลิเมตร</p>
     <hr>
     <p>F1 Score เฉลี่ยของ Model <b>0.78</b></p>
-    <p>RMSE เฉลี่ยของ Model <b>8.93</b></p>
+    <p>RMSE เฉลี่ยของ Model <b></b></p>
+
+    {{-- $variable_station[index][field] --}}
 </div>
 @stop
 
