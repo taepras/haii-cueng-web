@@ -157,7 +157,7 @@ public function viewStation(){
 }
 
 public function about(){
-    //    return view('about');
-    return view('main');
+    return view('about');
+    // return view('main');
 }
 }

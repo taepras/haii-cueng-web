@@ -174,10 +174,10 @@
 <div class="col-sm-3 text-center">
     <h4><b>ค่าสถิติของส่วนที่เลือก</b></h4>
     <p>F1 Score</p>
-    <h1 class="huge-text">{{$f1_score}}</h1>
+    <h1 class="huge-text">{{round($f1_score*100,2)}}%</h1>
     <hr>
     <p>Root Mean Square Error (RMSE)</p>
-    <h1 class="huge-text">{{$rmse}}</h1>
+    <h1 class="huge-text">{{round($rmse, 2)}}</h1>
     <p>มิลลิเมตร</p>
     <hr>
     <p>F1 Score เฉลี่ยของ Model <b>0.78</b></p>
