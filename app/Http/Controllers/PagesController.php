@@ -18,7 +18,9 @@ class PagesController extends Controller
        //$info_station = "AAA";
        $a = \App\StationInfo::where('station_id','=','300201')->first();
        $info_station = json_decode($a,true);
-       return view('view_map',compact('info_station'));
+       $b = \App\CFSV2::all()->last();
+       $variable_station = json_decode($b,true);
+       return view('view_map')->with('info_station',$info_station)->with('variable_station',$variable_station);
    }
 
    public function viewForecastStation($station_id){

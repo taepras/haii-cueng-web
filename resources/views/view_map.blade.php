@@ -3,7 +3,7 @@
 
 @section('page-header')
 <h1>ผลการพยากรณ์</h1>
-<p>ผลการพยากรณ์ปริมาณฝน ณ วันที่ xx-xx-xx</a></p>
+<p>ผลการพยากรณ์ปริมาณฝน ณ วันที่ {{$variable_station['date']}}</a></p>
 @stop
 
 
@@ -51,7 +51,7 @@
         <div class="col-sm-6">
             <p>
                 ผลการพยากรณ์<br>
-                ปริมาณฝน ณ วันที่ xx-xx-xx
+                ปริมาณฝน ณ วันที่ {{$variable_station['date']}}
             </p>
             <h1 class="huge-text" id="rainfall">52.7</h1>
             <p>
@@ -82,73 +82,73 @@
                         <td>Geopotential Height</td>
                         <td>200mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['gph200_0']}}</td>
                     </tr>
                     <tr>
                         <td>Geopotential Height</td>
                         <td>850mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['gph850_0']}}</td>
                     </tr>
                     <tr>
                         <td>Relative Humidity</td>
                         <td>200mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['h200_0']}}</td>
                     </tr>
                     <tr>
                         <td>Relative Humidity</td>
                         <td>850mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['h850_0']}}</td>
                     </tr>
                     <tr>
                         <td>Pressure</td>
                         <td>Mean Sea Level</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['p_msl_0']}}</td>
                     </tr>
                     <tr>
                         <td>Pressure</td>
                         <td>Surface Level</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['p_sfl_0']}}</td>
                     </tr>
                     <tr>
                         <td>Temperature</td>
                         <td>200 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['temp200_0']}}</td>
                     </tr>
                     <tr>
                         <td>Temperature</td>
                         <td>850 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['temp850_0']}}</td>
                     </tr>
                     <tr>
                         <td>U-Component of Wind</td>
                         <td>200 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['u200_0']}}</td>
                     </tr>
                     <tr>
                         <td>U-Component of Wind</td>
                         <td>850 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['u850_0']}}</td>
                     </tr>
                     <tr>
                         <td>V-Component of Wind</td>
                         <td>200 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['v200_0']}}</td>
                     </tr>
                     <tr>
                         <td>V-Component of Wind</td>
                         <td>850 mb</td>
                         <td>00 GMT</td>
-                        <td>xxxxx</td>
+                        <td>{{$variable_station['v850_0']}}</td>
                     </tr>
                 </tbody>
             </table>
