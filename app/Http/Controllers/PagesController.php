@@ -57,7 +57,7 @@ class PagesController extends Controller
 
         $info_station = json_decode($a,true);
 
-        $b = \App\CFSV2::select('date', 'gph200_0', 'gph850_0')->where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
+        $b = \App\CFSV2::where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
         $variable_station = json_decode($b,true);
         return view('view_station')->with('b',$b)
             ->with('info_station',$info_station)
@@ -78,7 +78,7 @@ class PagesController extends Controller
 
         $info_station = json_decode($a,true);
 
-        $b = \App\CFSV2::select('date', 'gph200_0', 'gph850_0')->where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
+        $b = \App\CFSV2::where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
         $variable_station = json_decode($b,true);
         return view('view_station')->with('b',$b)
             ->with('info_station',$info_station)

@@ -217,7 +217,7 @@ var chart = c3.generate({
             }
         },
         y: {
-            label: 'rainfall(mm)',
+            label: 'rainfall (mm)',
             position: 'outer-center'
         }
     },

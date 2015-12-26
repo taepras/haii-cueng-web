@@ -369,7 +369,7 @@ $(document).ready(function(){
 
 //------------------------------------------------------------------------------------------------
 
-d3.csv("{{url().'/csv/stations.csv'}}", function(csv) {
+d3.csv("{{url().'/csv/mockweb.csv'}}", function(csv) {
     // csv = csv.filter(function(key) {
     //     return key != "Sex" && key != "L" && key != "M" && key != "S" ;
     // });
@@ -379,6 +379,8 @@ d3.csv("{{url().'/csv/stations.csv'}}", function(csv) {
             json: csv,
             keys: {
                 x: 'long',
+                y: 'lat',
+                z: 'rainfall',
                 value: ['lat', 'name_e', 'code'],
             },
             type: 'scatter',
@@ -390,7 +392,7 @@ d3.csv("{{url().'/csv/stations.csv'}}", function(csv) {
         point: {
             r: function(d) {
                 // console.log(csv[d.index]);
-                // console.log(this.data_json[d.index]);
+                console.log(this);
                 return (csv[d.index].long-96)*2;
             }
         },
@@ -412,15 +414,15 @@ d3.csv("{{url().'/csv/stations.csv'}}", function(csv) {
         tooltip: {
             format: {
                 name: function (name, ratio, id, index) {
-                    console.log(name);
-                    console.log(ratio);
-                    console.log(id);
-                    console.log(index);
-                    console.log(csv[index]);
+                    // console.log(name);
+                    // console.log(ratio);
+                    // console.log(id);
+                    // console.log(index);
+                    // console.log(csv[index]);
                     return 'Data ' + name;
                 },
                 contents: function(d){
-                    console.log(d);
+                    // console.log(d);
                     return d;
                 }
                 // value: function (value, ratio, id) {

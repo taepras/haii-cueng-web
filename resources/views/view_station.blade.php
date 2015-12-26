@@ -208,18 +208,20 @@ $(document).ready(function(){
     @endif
 });
 
+console.log({!! json_encode($b) !!});
+
 var chart = c3.generate({
     data: {
         x: 'date',
-        // json: {!! json_encode($b) !!},
-        url: '{{url().'/test/300201_edited_s.csv'}}',
+        json: {!! json_encode($b) !!},
+        // url: '{{url().'/test/300201_edited_s.csv'}}',
         type: 'line',
-        // keys: {
-        //     x: 'date', // it's possible to specify 'x' when category axis
-        //     value: ['gph200_0', 'gph850_0'],
-        // }
-        // show: ['value']
-        hide: ['mintemp', 'maxtemp']
+        keys: {
+            x: 'date', // it's possible to specify 'x' when category axis
+            value: ['predict_rainfall', 'gph200_0'],
+        },
+        show: ['value']
+        //hide: ['mintemp', 'maxtemp']
     },
     axis: {
         x: {
@@ -229,6 +231,10 @@ var chart = c3.generate({
             }
         },
         y: {
+            label: 'rainfall(mm)',
+            position: 'outer-center'
+        },
+        y2: {
             label: 'rainfall(mm)',
             position: 'outer-center'
         }
