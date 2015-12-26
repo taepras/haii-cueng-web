@@ -207,7 +207,7 @@ var chart = c3.generate({
         x: 'date',
         url: '{{url().'/csv/mocktest.csv'}}',
         type: 'line',
-        hide: ['']
+        hide: ['', 'error']
     },
     axis: {
         x: {
