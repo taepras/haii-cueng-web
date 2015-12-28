@@ -88,7 +88,12 @@ class PagesController extends Controller
             ->with('end_date',$end_date);
     }
 
-    public function results(){
+    public function viewResults(){
+        $stations = \App\StationInfo::orderBy('province', 'ASC')->get();
+        return view('view_test_map')->with('stations', $stations);
+    }
+
+    public function viewResultsStation($staion_id){
         // $info_station = null;
         // $variable_station = null;
         // return view('view_test')->with('variable_station',$variable_station)->with('info_station',$info_station);
@@ -125,7 +130,17 @@ class PagesController extends Controller
             $f1_score = "NaN";
         }
 
+        $results = [];
+        for ($i = 0; $i < count($variable_station); $i++) {
+            $results[$i]['date'] = $variable_station[$i]['date'];
+            $results[$i]['predict_rainfall'] = $variable_station[$i]['predict_rainfall'];
+            $results[$i]['actual_rainfall'] = $variable_station[$i]['actual_rainfall'];
+            $results[$i]['error'] = abs($results[$i]['predict_rainfall'] - $results[$i]['actual_rainfall']);
+        }
+
+        // echo var_dump($results);
         return view('view_test')
+        ->with('results', $results)
         ->with('variable_station',$variable_station)
         ->with('info_station',$info_station)
         ->with('station_id',$station_id)
@@ -136,7 +151,7 @@ class PagesController extends Controller
         //->with('json_data', $data);
     }
 
-    public function resultsPost(){
+    public function viewResultsStationPost(){
         $station_id = Input::get('id');
         $start_date = Input::get('start_date');
         $end_date = Input::get('end_date');
@@ -160,8 +175,8 @@ class PagesController extends Controller
                 if($variable_station[$i]['actual_rainfall'] <  0.1 && $variable_station[$i]['predict_rainfall'] <  0.1){ $tn++; }
                 if($variable_station[$i]['actual_rainfall'] >= 0.1 && $variable_station[$i]['predict_rainfall'] <  0.1){ $fn++; }
             }
-            if((2*$tp + $fp + $fn) !== 0) {
-                $f1_score = 2*$tp / (2*$tp + $fp + $fn);
+            if ((2*$tp + $fp + $fn) !== 0) {
+                $f1_score = 2 * $tp / (2 * $tp + $fp + $fn);
             } else {
                 $f1_score = "NaN";
             }
@@ -170,14 +185,23 @@ class PagesController extends Controller
             $f1_score = "NaN";
         }
 
+        $results = [];
+        for ($i = 0; $i < count($variable_station); $i++) {
+            $results[$i]['date'] = $variable_station[$i]['date'];
+            $results[$i]['predict_rainfall'] = $variable_station[$i]['predict_rainfall'];
+            $results[$i]['actual_rainfall'] = $variable_station[$i]['actual_rainfall'];
+            $results[$i]['error'] = abs($results[$i]['predict_rainfall'] - $results[$i]['actual_rainfall']);
+        }
+
         return view('view_test')
-        ->with('variable_station',$variable_station)
-        ->with('info_station',$info_station)
-        ->with('station_id',$station_id)
-        ->with('start_date', $start_date)
-        ->with('end_date', $end_date)
-        ->with('rmse', $rmse)
-        ->with('f1_score', $f1_score);
+                ->with('variable_station',$variable_station)
+                ->with('info_station',$info_station)
+                ->with('results', $results)
+                ->with('station_id',$station_id)
+                ->with('start_date', $start_date)
+                ->with('end_date', $end_date)
+                ->with('rmse', $rmse)
+                ->with('f1_score', $f1_score);
     }
 
     public function methodology(){

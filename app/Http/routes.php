@@ -15,13 +15,14 @@ Route::get('/', 'PagesController@main');
 Route::get('/forecast', 'PagesController@viewForecast');
 Route::get('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::get('/methodology', 'PagesController@methodology');
-Route::get('/test_results', 'PagesController@results');
+Route::get('/test_results', 'PagesController@viewResults');
+Route::get('/test_results/{station_id}', 'PagesController@viewResultsStation');
 Route::get('/about', 'PagesController@About');
 Route::get('/station', 'PagesController@viewStation');
 
 Route::post('/forecast', 'PagesController@viewForecastPost');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStationPost');
-Route::post('/test_results','PagesController@resultsPost');
+Route::post('/test_results/{station_id}','PagesController@viewResultsStationPost');
 
 
 Route::get('d/{page}', function ($page) {
