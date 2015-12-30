@@ -76,40 +76,6 @@ class PagesController extends Controller
             ->with('end_date',$end_date);
     }
 
-    public function viewForecastStationPost($station_id){
-        // $start_date = Input::get('start_date');
-        // $end_date = Input::get('end_date');
-
-        // TEST sending json to view
-        $start_date = Input::get('start_date');
-        $end_date = Input::get('end_date');
-		if(!$start_date)
-			$start_date = "1979-01-01";
-		if(!$end_date)
-			$end_date = "1979-01-24";
-        $a = \App\StationInfo::where('station_id','=',$station_id)->first();
-
-        $info_station = json_decode($a,true);
-
-        $b = \App\CFSV2::where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
-        $variable_station = json_decode($b,true);
-
-		$dataset = [];
-		for($i = 0; $i < count($variable_station); $i++){
-			foreach($variable_station[$i] as $var => $val){
-				$dataset[$var][$i] = $val;
-			}
-		}
-
-        return view('view_station')->with('b',$b)
-			->with('data', $dataset)
-            ->with('info_station',$info_station)
-            ->with('variable_station',$variable_station)
-            ->with('station_id',$station_id)
-            ->with('start_date',$start_date)
-            ->with('end_date',$end_date);
-    }
-
     public function viewResults(){
         $stations = \App\StationInfo::orderBy('province', 'ASC')->get();
         return view('view_test_map')->with('stations', $stations);
