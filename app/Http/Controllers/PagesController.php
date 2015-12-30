@@ -19,12 +19,20 @@ class PagesController extends Controller
         //    $info_station = null;
         //    $variable_station = null;
         //    return view('view_map')->with('info_station',$info_station)->with('variable_station',$variable_station);
-        $station_id = "300201";
-        $date = "1979-01-01";
+        $station_id = "455601";
+        $date = "2012-07-04";
         $a = \App\StationInfo::where('station_id','=',$station_id)->first();
         $info_station = json_decode($a,true);
         $b = \App\CFSV2::where('station_id','=',$station_id)->where('date','=',$date)->first();
         $variable_station = json_decode($b,true);
+
+		$map_data = \App\CFSV2::where('date','=',$date)->get();
+		// TODO return an object that looks like this to view for map plotting:
+		// date 		| station_id | station_name	| lat  | long | predict_rainfall |
+		// -------------+------------+--------------+------+------+------------------|
+		// yyyy-mm-dd	| xxxxxx	 | xxxxxxxxx	| x.xx | x.xx | x.xx			 |
+		// (same date)	| xxxxxx	 | xxxxxxxxx	| x.xx | x.xx | x.xx			 |
+
         return view('view_map')
         ->with('info_station',$info_station)
         ->with('variable_station',$variable_station)
