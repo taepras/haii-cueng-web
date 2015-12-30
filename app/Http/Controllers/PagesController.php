@@ -47,12 +47,14 @@ class PagesController extends Controller
     }
 
     public function viewForecastStation($station_id){
-        // $start_date = Input::get('start_date');
-        // $end_date = Input::get('end_date');
+        $start_date = Input::get('start_date');
+        $end_date = Input::get('end_date');
 
-        // TEST sending json to view
-        $start_date = "1979-01-01";
-        $end_date = "1979-01-24";
+        if(!$start_date)
+			$start_date = "1979-01-01";
+		if(!$end_date)
+        	$end_date = "1979-01-24";
+
         $a = \App\StationInfo::where('station_id','=',$station_id)->first();
 
         $info_station = json_decode($a,true);
