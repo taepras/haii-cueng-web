@@ -93,11 +93,10 @@ class PagesController extends Controller
         return view('view_test_map')->with('stations', $stations);
     }
 
-    public function viewResultsStation($staion_id){
+    public function viewResultsStation($station_id){
         // $info_station = null;
         // $variable_station = null;
         // return view('view_test')->with('variable_station',$variable_station)->with('info_station',$info_station);
-        $station_id = "300201";
         $start_date = "1979-01-01";
         $end_date = "1979-01-24";
         $a = \App\StationInfo::where('station_id','=',$station_id)->first();
@@ -151,8 +150,7 @@ class PagesController extends Controller
         //->with('json_data', $data);
     }
 
-    public function viewResultsStationPost(){
-        $station_id = Input::get('id');
+    public function viewResultsStationPost($station_id){
         $start_date = Input::get('start_date');
         $end_date = Input::get('end_date');
         $a = \App\StationInfo::where('station_id','=',$station_id)->first();

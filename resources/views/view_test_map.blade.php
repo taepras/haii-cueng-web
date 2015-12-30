@@ -13,7 +13,7 @@
     <h4><b>ภาพรวมผลการทดสอบ Model</b></h4>
     <div class="btn-group" role="group">
         {{-- <button type="button" class="btn btn-default active">Accuracy</button> --}}
-        <button type="button" class="btn btn-default">RMSE</button>
+        <button type="button" class="btn btn-default active">RMSE</button>
         <button type="button" class="btn btn-default">F1 Score</button>
     </div>
     <div id="chart"></div>
@@ -53,7 +53,11 @@
                         <td>{{$station->station_name}}</td>
                         <td>{{$station->district ? $station->district : 'N/A'}}</td>
                         <td>{{$station->province ? $station->province : 'N/A'}}</td>
-                        <td><a href="{{url().'/test_results/'.$station->station_id}}">ดูผล &raquo;</a></td>
+                        <td class="text-right">
+                            <a href="{{url().'/test_results/'.$station->station_id}}" class="btn btn-primary btn-xs">
+                                ดูผล &raquo;
+                            </a>
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
