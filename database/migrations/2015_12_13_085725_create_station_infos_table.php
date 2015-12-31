@@ -19,6 +19,10 @@ class CreateStationInfosTable extends Migration
             $table->string('sub_district');
             $table->string('district');
             $table->string('province');
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->double('f1_score');
+            $table->double('rmse');
         });
     }
 

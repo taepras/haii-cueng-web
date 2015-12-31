@@ -26,7 +26,8 @@ class PagesController extends Controller
         $b = \App\CFSV2::where('station_id','=',$station_id)->where('date','=',$date)->first();
         $variable_station = json_decode($b,true);
 
-		$map_data = \App\CFSV2::where('date','=',$date)->get();
+		$map_data = \App\CFSV2::where('date','=',$date)->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
+            ->select('station_infos.station_id','station_infos.station_name','station_infos.latitude','station_infos.longitude','cfsv2s.predict_rainfall')->get();
 		// TODO return an object that looks like this to view for map plotting:
 		// date 		| station_id | station_name	| lat  | long | predict_rainfall |
 		// -------------+------------+--------------+------+------+------------------|
@@ -37,7 +38,9 @@ class PagesController extends Controller
         ->with('info_station',$info_station)
         ->with('variable_station',$variable_station)
         ->with('station_id',$station_id)
-        ->with('date', $date);
+        ->with('date', $date)
+            ->with('map_data',$map_data);
+
     }
 
     public function viewForecastPost(){
