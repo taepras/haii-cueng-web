@@ -2,7 +2,7 @@
 
 
 @section('page-header')
-<h1>เกี่ยวกับโครงการ</h1>
+<h1 style="margin-bottom:-15px;">เกี่ยวกับโครงการ</h1>
 @stop
 
 
