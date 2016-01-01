@@ -54,6 +54,5 @@
 	"v850_0": {		"desc": "V-Component of Wind",	"level": "850mb",			"unit": "m/s",		"time": 0},
 	"v850_6": {		"desc": "V-Component of Wind",	"level": "850mb",			"unit": "m/s",		"time": 6},
 	"v850_12": {	"desc": "V-Component of Wind",	"level": "850mb",			"unit": "m/s",		"time": 12},
-	"v850_18": {	"desc": "V-Component of Wind",	"level": "850mb",			"unit": "m/s",		"time": 18},
-
+	"v850_18": {	"desc": "V-Component of Wind",	"level": "850mb",			"unit": "m/s",		"time": 18}
 }
