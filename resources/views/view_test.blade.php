@@ -28,14 +28,21 @@
 					<input type="date" class="form-control" name="end_date" id="end_date">
 				</div>
 			</div>
-			{{-- &nbsp;&nbsp; --}}
+			<div class="form-group">
+				<div class="col-sm-9 col-sm-offset-3">
+					<p class="help-block">
+						มีข้อมูลเฉพาะในช่วงวันที่
+						<b>{{date("d/m/Y", strtotime($info_station['start_date']))}}</b>
+						ถึงวันที่
+						<b>{{date("d/m/Y", strtotime($info_station['end_date']))}}</b>
+					</p>
+				</div>
+			</div>
 			<div class="form-group">
 				<div class="col-sm-12">
 					<button type="submit" class="btn btn-primary btn-block">ดูข้อมูล &raquo;</button>
 				</div>
 			</div>
-
-			{{-- <button class="btn btn-primary">ดูข้อมูล &raquo;</button> --}}
 		</form>
 	</div>
 </div>
@@ -54,8 +61,8 @@
 		<p>มิลลิเมตร</p>
 		<hr>
 		{{-- TODO add F1 & rmse column of each stations to stations table in database --}}
-		<p>F1 Score เฉลี่ยของสถานีนี้ <b>{{''}}</b></p>
-		<p>RMSE เฉลี่ยของสถานีนี้ <b>{{''}}</b></p>
+		<p>F1 Score เฉลี่ยของสถานีนี้ <b>{{$info_station['f1_score']}}%</b></p>
+		<p>RMSE เฉลี่ยของสถานีนี้ <b>{{$info_station['rmse']}} mm</b></p>
 	</div>
 </div>
 <div class="row">
@@ -100,11 +107,12 @@ var chart = c3.generate({
 			x: 'date', // it's possible to specify 'x' when category axis
 			value: ['predict_rainfall', 'actual_rainfall', 'error'],
 		},
-		hide: ['error']
-		// x: 'date',
-		// url: '{{url().'/csv/mocktest.csv'}}',
-		// type: 'line',
-		// hide: ['', 'error']
+		hide: ['error'],
+		colors: {
+            predict_rainfall: '#2e6da4',
+            actual_rainfall: '#2ec135',
+            error: '#be3e49'
+        },
 	},
 	axis: {
 		x: {

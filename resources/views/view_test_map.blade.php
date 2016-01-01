@@ -13,10 +13,11 @@
     <h4><b>ภาพรวมผลการทดสอบ Model</b></h4>
     <div class="btn-group" role="group">
         {{-- <button type="button" class="btn btn-default active">Accuracy</button> --}}
-        <button type="button" class="btn btn-default active">RMSE</button>
-        <button type="button" class="btn btn-default">F1 Score</button>
+        <a href="#" class="btn btn-default active" id="rmse">RMSE</a>
+        <a href="#" class="btn btn-default" id="f1_score">F1 Score</a>
     </div>
-    <div id="chart"></div>
+    <div id="rmse-chart"></div>
+	<div id="f1_score-chart"></div>
 </div>
 <div class="col-sm-7">
     <div class="row">
@@ -25,12 +26,12 @@
         </div>
         <div class="col-sm-6">
             <p>Root Mean Square Error (RMSE)</p>
-            <h1 class="huge-text">9.84</h1>
+            <h1 class="huge-text" id="rmse-value"></h1>
             <p>มิลลิเมตร</p>
         </div>
         <div class="col-sm-6">
             <p>F1 Score</p>
-            <h1 class="huge-text">78.2%</h1>
+            <h1 class="huge-text" id="f1_score-value"></h1>
         </div>
     </div>
     <hr>
@@ -48,7 +49,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($stations as $id => $station)
+                    @foreach($info_station as $id => $station)
                     <tr class="station" data-id="{{$id}}">
                         <td>{{$station->station_name}}</td>
                         <td>{{$station->district ? $station->district : 'N/A'}}</td>
@@ -108,6 +109,54 @@ function updatePage(){
     });
 }
 
+var data = {!! json_encode($info_station) !!};
+
+var rmse_svg = dimple.newSvg("#rmse-chart", 380, 700);
+var rmse_chart = new dimple.chart(rmse_svg, data);
+rmse_chart.setMargins("10px","20px","0px","0px");
+// rmse_chart.setMargins("40px","20px","20px","40px");
+var rmse_x = rmse_chart.addMeasureAxis("x", "longitude");
+var rmse_y = rmse_chart.addMeasureAxis("y", "latitude");
+var rmse_z = rmse_chart.addMeasureAxis("z", "rmse");
+var rmse_c = rmse_chart.addMeasureAxis("c", "rmse");
+rmse_chart.defaultColors = [new dimple.color("#be3e49", "#be3e49", 1)];
+rmse_x.overrideMin = 97;
+rmse_x.overrideMax = 105;
+rmse_x.clamp = false;
+rmse_y.overrideMin = 6;
+rmse_y.overrideMax = 20;
+rmse_y.clamp = false;
+rmse_z.overrideMin = -2;
+rmse_z.overrideMax = 40;
+rmse_chart.addSeries(["latitude", "station_id", "station_name"], dimple.plot.bubble);
+rmse_chart.draw();
+
+var f1_svg = dimple.newSvg("#f1_score-chart", 380, 700);
+var f1_chart = new dimple.chart(f1_svg, data);
+f1_chart.setMargins("10px","20px","0px","0px");
+var f1_x = f1_chart.addMeasureAxis("x", "longitude");
+var f1_y = f1_chart.addMeasureAxis("y", "latitude");
+var f1_z = f1_chart.addMeasureAxis("z", "f1_score");
+var f1_c = f1_chart.addMeasureAxis("c", "f1_score");
+f1_chart.defaultColors = [new dimple.color("#2ec135", "#2ec135", 1),];
+f1_x.overrideMin = 97;
+f1_x.overrideMax = 105;
+f1_x.clamp = false;
+f1_y.overrideMin = 6;
+f1_y.overrideMax = 20;
+f1_y.clamp = false;
+f1_z.overrideMin = -20;
+f1_z.overrideMax = 300;
+f1_c.overrideMin = 0;
+f1_c.overrideMax = 100;
+f1_chart.addSeries(["latitude", "station_id", "station_name"], dimple.plot.bubble);
+f1_chart.draw();
+
+$.getJSON( "{{asset('json/test_statistics.json')}}", function( stat ) {
+	$('#rmse-value').text(stat.rmse.toFixed(2));
+	$('#f1_score-value').text(stat.f1_score.toFixed(1) + '%');
+});
+
 $(document).ready(function(){
     updatePage();
 
@@ -130,53 +179,28 @@ $(document).ready(function(){
             current_page--;
         updatePage();
     });
-});
 
-var svg = dimple.newSvg("#chart", 380, 700);
+	$('#f1_score-chart').hide();
 
-d3.csv("{{url().'/csv/mockweb.csv'}}", function (data) {
-    var myChart = new dimple.chart(svg, data);
+	$('#rmse, #f1_score').click(function(e){
+		e.preventDefault();
+		var _this = $(this);
+		$('#rmse, #f1_score').removeClass('active', function(){
+			$('#' + _this.attr('id')).addClass('active');
+		});
+	});
 
+	$('#rmse').click(function(e){
+		e.preventDefault();
+		$('#rmse-chart').show();
+		$('#f1_score-chart').hide();
+	});
 
-    myChart.setMargins("40px", "20px", "10px", "40px");
-    var x = myChart.addMeasureAxis("x", "long");
-    var y = myChart.addMeasureAxis("y", "lat");
-    var z = myChart.addMeasureAxis("z", "rainfall");
-    var c = myChart.addMeasureAxis("c", "rainfall");
-    //var c = myChart.addMeasureAxis("c", 0);
-
-    // myChart.defaultColors = [
-    //       new dimple.color("#3498db", "#2980b9", 1), // blue
-    //       new dimple.color("#e74c3c", "#c0392b", 1), // red
-    //       new dimple.color("#2ecc71", "#27ae60", 1), // green
-    //       new dimple.color("#9b59b6", "#8e44ad", 1), // purple
-    //       new dimple.color("#e67e22", "#d35400", 1), // orange
-    //       new dimple.color("#f1c40f", "#f39c12", 1), // yellow
-    //       new dimple.color("#1abc9c", "#16a085", 1), // turquoise
-    //       new dimple.color("#95a5a6", "#7f8c8d", 1)  // gray
-    //   ];
-
-    myChart.defaultColors = [
-        new dimple.color("#459cea", "#459cea", 1), // blue
-        //new dimple.color("rgba(59, 156, 234, 0.5)", "rgba(59, 156, 234, 0.5)", 1), // blue
-    ];
-
-    x.overrideMin = 97;
-    x.overrideMax = 105;
-    y.overrideMin = 6;
-    y.overrideMax = 20;
-    z.overrideMin = -3;
-    z.overrideMax = 60;
-
-    myChart.addSeries(["lat", "code"], dimple.plot.bubble);
-    myChart.addLegend(180, 10, 360, 20, "right");
-    myChart.draw();
-
-    // svg.select("g").selectAll("g.dimple-gridline").filter(function (d, i) { return i === 1; })
-    // .append("rect")
-    // .attr("x", 0).attr("y", 0)
-    // .attr("width", 380).attr("height", 700)
-    // .style("fill", "rgba(0,0,0,0.1)");
+	$('#f1_score').click(function(e){
+		e.preventDefault();
+		$('#f1_score-chart').show();
+		$('#rmse-chart').hide();
+	});
 });
 </script>
 @stop

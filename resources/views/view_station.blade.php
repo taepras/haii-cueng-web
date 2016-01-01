@@ -9,12 +9,12 @@
 
 @section('content')
 <div class="row">
-{{-- <form role="form" method="post" action="{{url().'/forecast/'.$station_id}}"> --}}
+	{{-- <form role="form" method="post" action="{{url().'/forecast/'.$station_id}}"> --}}
 	<div class="col-sm-8 col-sm-offset-2" id="graph">
 		<form class="form-horizontal text-left" method="post" action="" id="config-form">
 			{{csrf_field()}}
 			<div class="form-group">
-				<label class="col-sm-3">เลือกสถานี</label>
+				<label class="choose-date-label col-sm-3">เลือกสถานี</label>
 				<div class="col-sm-9">
 					@include('partials.station_selector')
 				</div>
@@ -29,7 +29,16 @@
 					<input type="date" class="form-control" name="end_date" id="end_date">
 				</div>
 			</div>
-			{{-- &nbsp;&nbsp; --}}
+			<div class="form-group">
+				<div class="col-sm-9 col-sm-offset-3">
+					<p class="help-block">
+						มีข้อมูลเฉพาะในช่วงวันที่
+						<b>{{date("d/m/Y", strtotime($info_station['start_date']))}}</b>
+						ถึงวันที่
+						<b>{{date("d/m/Y", strtotime($info_station['end_date']))}}</b>
+					</p>
+				</div>
+			</div>
 			<div class="form-group">
 				<div class="col-sm-12">
 					<button type="submit" class="btn btn-primary btn-block">ดูข้อมูล &raquo;</button>
@@ -40,8 +49,8 @@
 		</form>
 	</div>
 </div>
-	<hr>
-	<div class="row">
+<hr>
+<div class="row">
 	<div class="col-sm-12">
 		<div id="chart"></div>
 		<br><br>
@@ -65,14 +74,14 @@
 							<th>จังหวัด</th>
 							<td>{{$info_station['province']}}</td>
 						</tr>
-						{{-- <tr>
-							<th>ข้อมูลตั้งแต่วันที่</th>
-							<td>{{date("d/m/Y", strtotime($start_date))}}</td>
+						<tr>
+							<th>มีข้อมูลตั้งแต่วันที่</th>
+							<td>{{date("d/m/Y", strtotime($info_station['start_date']))}}</td>
 						</tr>
 						<tr>
-							<th>ข้อมูลถึงวันที่</th>
-							<td>{{date("d/m/Y", strtotime($end_date))}}</td>
-						</tr> --}}
+							<th>มีข้อมูลถึงวันที่</th>
+							<td>{{date("d/m/Y", strtotime($info_station['end_date']))}}</td>
+						</tr>
 					</table>
 				</div>
 			</div>
@@ -127,119 +136,123 @@
 @section('script')
 <script>
 var dataset = {!! json_encode($data) !!};
-var description = $.getJSON("{{asset('json/variable_description.json')}}", function(data){
-	console.log("JSON Loaded");
-	console.log(data);
-});
-if(!$.isEmptyObject(dataset)){
-	console.log(dataset);
-	@foreach($data as $key => $val)
-	dataset.{{$key}} = ['{{$key}}'].concat(dataset.{{$key}});
-	@endforeach
-	var chartInitialConfig = {
-		data: {
-			x: 'date',
-			columns: [
-				dataset.date,
-				dataset.predict_rainfall,
-			],
-			type: 'line',
-			axes: { predict_rainfall: 'y' }
-		},
-		axis: {
-			x: {
-				type: 'timeseries',
-				tick: { format: '%Y-%m-%d' }
-			},
-			y: {
-				label: 'rainfall(mm)',
-				position: 'outer-center'
-			},
-		},
-		zoom: { enabled: true }
-	};
-	var chart = c3.generate(chartInitialConfig);
 
-	function generateChart(varName){
-		if(varName){
-			var chartConfig = {
-				data: {
-					x: 'date',
-					columns: [
-						dataset.date,
-						dataset.predict_rainfall,
-						dataset[varName],
-					],
-					type: 'line',
-					axes: { predict_rainfall: 'y' }
+$.getJSON( "{{asset('json/variable_description.json')}}", function( description ) {
+	if(!$.isEmptyObject(dataset)){
+		// console.log(dataset);
+		@foreach($data as $key => $val)
+		dataset.{{$key}} = ['{{$key}}'].concat(dataset.{{$key}});
+		@endforeach
+		var chartInitialConfig = {
+			data: {
+				x: 'date',
+				columns: [
+					dataset.date,
+					dataset.predict_rainfall,
+				],
+				type: 'line',
+				axes: { predict_rainfall: 'y' }
+			},
+			axis: {
+				x: {
+					type: 'timeseries',
+					tick: { format: '%Y-%m-%d' }
 				},
-				axis: {
-					x: {
-						type: 'timeseries',
-						tick: { format: '%Y-%m-%d' }
+				y: {
+					label: 'rainfall(mm)',
+					position: 'outer-center'
+				},
+			},
+			zoom: { enabled: true }
+		};
+		var chart = c3.generate(chartInitialConfig);
+
+		function generateChart(varName){
+			if(varName){
+				var chartConfig = {
+					data: {
+						x: 'date',
+						columns: [
+							dataset.date,
+							dataset.predict_rainfall,
+							dataset[varName],
+						],
+						type: 'line',
+						axes: { predict_rainfall: 'y' }
 					},
-					y: {
-						label: 'rainfall (mm)',
-						position: 'outer-center'
+					axis: {
+						x: {
+							type: 'timeseries',
+							tick: { format: '%Y-%m-%d' }
+						},
+						y: {
+							label: 'rainfall (mm)',
+							position: 'outer-center'
+						},
+						y2: {
+							label: (
+								description[varName].desc +
+								' @' + description[varName].level +
+								', ' + description[varName].time + ' GMT' +
+								' (' + description[varName].unit + ')'
+							),
+							position: 'outer-center',
+							show: true
+						}
 					},
-					y2: {
-						label: description[varName],
-						position: 'outer-center',
-						show: true
+					zoom: {
+						enabled: true
 					}
-				},
-				zoom: {
-					enabled: true
 				}
+				chartConfig.data.axes[varName] = 'y2';
+				chart = c3.generate(chartConfig);
+			} else {
+				chart = c3.generate(chartInitialConfig);
 			}
-			chartConfig.data.axes[varName] = 'y2';
-			chart = c3.generate(chartConfig);
-		} else {
-			chart = c3.generate(chartInitialConfig);
 		}
-	}
-} else {
-	$('#chart').html("\
+	} else {
+		$('#chart').html("\
 		<h1>ไม่มีข้อมูลที่ท่านเลือก</h1>\
 		<p>กรุณาเลือกสถานีหรือช่วงเวลาใหม่</p>\
 		<br>\
 		<hr>\
-	");
-}
+		");
+	}
 
-$(document).ready(function(){
-	@if(isset($station_id))
-	$('#station').val("{{$station_id}}");
-	@endif
-	@if(isset($start_date))
-	$('#start_date').val("{{$start_date}}");
-	@endif
-	@if(isset($end_date))
-	$('#end_date').val("{{$end_date}}");
-	@endif
+	$(document).ready(function(){
+		@if(isset($station_id))
+		$('#station').val("{{$station_id}}");
+		@endif
+		@if(isset($start_date))
+		$('#start_date').val("{{$start_date}}");
+		@endif
+		@if(isset($end_date))
+		$('#end_date').val("{{$end_date}}");
+		@endif
 
-	$('#show_variable, #time').change(function(){
-		var varString = $('#show_variable').val();
-		if(varString == 'actual_rainfall'){
-			var chartConfig = chartInitialConfig;
-			chartConfig.data.columns.push(dataset.actual_rainfall);
-			chartConfig.data.axes = { predict_rainfall: 'y', actual_rainfall: 'y' };
-			chart = c3.generate(chartConfig);
-		} else {
-			if(varString){
-				varString += "_";
-				varString += $('#time').val();
+		$('#show_variable, #time').change(function(){
+			var varString = $('#show_variable').val();
+			if(varString == 'actual_rainfall'){
+				var chartConfig = chartInitialConfig;
+				chartConfig.data.columns.push(dataset.actual_rainfall);
+				chartConfig.data.axes = { predict_rainfall: 'y', actual_rainfall: 'y' };
+				chart = c3.generate(chartConfig);
+			} else {
+				if(varString){
+					varString += "_";
+					varString += $('#time').val();
+				}
+				generateChart(varString);
 			}
-			generateChart(varString);
-		}
-	});
+		});
 
-	$('#config-form').attr('action', window.location.href + "#graph");
-	$('#station').change(function(){
-		if($(this).val())
+		$('#config-form').attr('action', window.location.href + "#graph");
+		$('#station').change(function(){
+			if($(this).val())
 			$('#config-form').attr('action', "{{url().'/forecast/'}}" + $(this).val());
-		else
+			else
 			$('#config-form').attr('action', window.location.href + "#graph");
+		});
 	});
 });
 </script>
