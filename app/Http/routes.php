@@ -20,9 +20,9 @@ Route::get('/test_results/{station_id}', 'PagesController@viewResultsStation');
 Route::get('/about', 'PagesController@About');
 Route::get('/station', 'PagesController@viewStation');
 
-Route::post('/forecast', 'PagesController@viewForecastPost');
+Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
-Route::post('/test_results/{station_id}','PagesController@viewResultsStationPost');
+Route::post('/test_results/{station_id}','PagesController@viewResultsStation');
 
 
 Route::get('d/{page}', function ($page) {
