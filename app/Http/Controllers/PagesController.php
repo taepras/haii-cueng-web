@@ -235,4 +235,9 @@ class PagesController extends Controller
 		$user = Auth::user();
 		return view('change_password')->with('user', $user);
 	}
+
+	public function changePasswordSuccess(){
+		$user = Auth::user();
+		return view('change_password_success')->with('user', $user);
+	}
 }

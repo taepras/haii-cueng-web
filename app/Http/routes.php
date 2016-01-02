@@ -23,6 +23,7 @@ Route::get('/about', 'PagesController@About');
 Route::get('/station', 'PagesController@viewStation');
 Route::get('/login', 'PagesController@login');
 Route::get('/change_password', 'PagesController@changePassword');
+Route::get('/change_password_success', 'PagesController@changePasswordSuccess');
 
 Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
