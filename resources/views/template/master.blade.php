@@ -56,9 +56,16 @@
 		<hr>
 		<div class="row">
 			<div class="col-sm-12 text-center">
-				<img src="{{url().'/img/logo_haii.gif'}}" style="height:100px;">
+				<img src="{{url().'/img/logo_haii.gif'}}" style="height:100px; max-width:90%">
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<img src="{{url().'/img/logo_chulaengineering.png'}}" style="height:50px;">
+				<img src="{{url().'/img/logo_chulaengineering.png'}}" style="height:50px; max-width:90%">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<br>
+				<a href="{{url().'/login'}}">เข้าสู่ระบบ</a> เพื่อดูข้อมูลปริมาณฝนเพิ่มเติม
+				<span class="glyphicon glyphicon-user"></span> <b>admin</b> &nbsp; <a href="{{url().'/change_password'}}">เปลี่ยนรหัสผ่าน</a> | <a href="{{url().'/logout'}}">ออกจากระบบ</a>
 			</div>
 		</div>
 	</footer>
