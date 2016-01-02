@@ -67,16 +67,75 @@ class PagesController extends Controller
 			else
 				$date = $info_station['end_date'];
 		}
-
-        $b = \App\CFSV2::where('station_id','=',$station_id)->where('date','=',$date)->first();
+        if($user != null) {
+            $b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)->first();
+            $map_data = \App\CFSV2::where('date','=',$date)
+                ->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
+                ->select('station_infos.station_id','station_infos.station_name',
+                    'station_infos.latitude','station_infos.longitude',
+                    'cfsv2s.predict_rainfall')
+                ->get();
+        }
+        else {
+            $b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)
+                ->select('gph200_0'
+                    ,'gph850_0'
+                    ,'h200_0'
+                    ,'h850_0'
+                    ,'p_msl_0'
+                    ,'p_sfl_0'
+                    ,'temp200_0'
+                    ,'temp850_0'
+                    ,'u200_0'
+                    ,'u850_0'
+                    ,'v200_0'
+                    ,'v850_0'
+                    ,'gph200_6'
+                    ,'gph850_6'
+                    ,'h200_6'
+                    ,'h850_6'
+                    ,'p_msl_6'
+                    ,'p_sfl_6'
+                    ,'temp200_6'
+                    ,'temp850_6'
+                    ,'u200_6'
+                    ,'u850_6'
+                    ,'v200_6'
+                    ,'v850_6'
+                    ,'gph200_12'
+                    ,'gph850_12'
+                    ,'h200_12'
+                    ,'h850_12'
+                    ,'p_msl_12'
+                    ,'p_sfl_12'
+                    ,'temp200_12'
+                    ,'temp850_12'
+                    ,'u200_12'
+                    ,'u850_12'
+                    ,'v200_12'
+                    ,'v850_12'
+                    ,'gph200_18'
+                    ,'gph850_18'
+                    ,'h200_18'
+                    ,'h850_18'
+                    ,'p_msl_18'
+                    ,'p_sfl_18'
+                    ,'temp200_18'
+                    ,'temp850_18'
+                    ,'u200_18'
+                    ,'u850_18'
+                    ,'v200_18'
+                    ,'v850_18'
+                    ,'predict_rainfall')
+                    ->first(); // Hide actual_rainfall
+            $map_data = \App\CFSV2::where('date','=',$date)
+                ->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
+                ->select('station_infos.station_id','station_infos.station_name',
+                    'station_infos.latitude','station_infos.longitude',
+                    'cfsv2s.predict_rainfall')
+                ->get();
+        }
         $variable_station = json_decode($b,true);
-
-		$map_data = \App\CFSV2::where('date','=',$date)
-			->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
-            ->select('station_infos.station_id','station_infos.station_name',
-					'station_infos.latitude','station_infos.longitude',
-					'cfsv2s.predict_rainfall')
-			->get();
 		// return an object that looks like this to view for map plotting:
 		// date 		| station_id | station_name	| lat  | long | predict_rainfall |
 		// -------------+------------+--------------+------+------+------------------|
@@ -107,7 +166,74 @@ class PagesController extends Controller
 		if(!$end_date)
         	$end_date = $info_station['end_date'];
 
-        $b = \App\CFSV2::where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
+        if($user != null) {
+            $b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)->first();
+            $map_data = \App\CFSV2::where('date','=',$date)
+                ->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
+                ->select('station_infos.station_id','station_infos.station_name',
+                    'station_infos.latitude','station_infos.longitude',
+                    'cfsv2s.predict_rainfall')
+                ->get();
+        }
+        else {
+            $b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)
+                ->select('gph200_0'
+                    ,'gph850_0'
+                    ,'h200_0'
+                    ,'h850_0'
+                    ,'p_msl_0'
+                    ,'p_sfl_0'
+                    ,'temp200_0'
+                    ,'temp850_0'
+                    ,'u200_0'
+                    ,'u850_0'
+                    ,'v200_0'
+                    ,'v850_0'
+                    ,'gph200_6'
+                    ,'gph850_6'
+                    ,'h200_6'
+                    ,'h850_6'
+                    ,'p_msl_6'
+                    ,'p_sfl_6'
+                    ,'temp200_6'
+                    ,'temp850_6'
+                    ,'u200_6'
+                    ,'u850_6'
+                    ,'v200_6'
+                    ,'v850_6'
+                    ,'gph200_12'
+                    ,'gph850_12'
+                    ,'h200_12'
+                    ,'h850_12'
+                    ,'p_msl_12'
+                    ,'p_sfl_12'
+                    ,'temp200_12'
+                    ,'temp850_12'
+                    ,'u200_12'
+                    ,'u850_12'
+                    ,'v200_12'
+                    ,'v850_12'
+                    ,'gph200_18'
+                    ,'gph850_18'
+                    ,'h200_18'
+                    ,'h850_18'
+                    ,'p_msl_18'
+                    ,'p_sfl_18'
+                    ,'temp200_18'
+                    ,'temp850_18'
+                    ,'u200_18'
+                    ,'u850_18'
+                    ,'v200_18'
+                    ,'v850_18'
+                    ,'predict_rainfall')
+                    ->first(); // Hide actual_rainfall
+            $map_data = \App\CFSV2::where('date','=',$date)
+                ->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
+                ->select('station_infos.station_id','station_infos.station_name',
+                    'station_infos.latitude','station_infos.longitude',
+                    'cfsv2s.predict_rainfall')
+                ->get(); // Hide actual_rainfall
+        }
         $variable_station = json_decode($b,true);
 
 		$dataset = [];
@@ -120,7 +246,6 @@ class PagesController extends Controller
         return view('view_station')->with('b',$b)
             ->with('data',$dataset)
             ->with('info_station',$info_station)
-            ->with('variable_station',$variable_station)
             ->with('station_id',$station_id)
             ->with('start_date',$start_date)
             ->with('end_date',$end_date)
@@ -185,14 +310,14 @@ class PagesController extends Controller
         for ($i = 0; $i < count($variable_station); $i++) {
             $results[$i]['date'] = $variable_station[$i]['date'];
             $results[$i]['predict_rainfall'] = $variable_station[$i]['predict_rainfall'];
-            $results[$i]['actual_rainfall'] = $variable_station[$i]['actual_rainfall'];
+            if($user != null)
+                $results[$i]['actual_rainfall'] = $variable_station[$i]['actual_rainfall'];
             $results[$i]['error'] = abs($results[$i]['predict_rainfall'] - $results[$i]['actual_rainfall']);
         }
 
         // echo var_dump($results);
         return view('view_test')
         ->with('results', $results)
-        ->with('variable_station',$variable_station)
         ->with('info_station',$info_station)
         ->with('station_id',$station_id)
         ->with('start_date', $start_date)
