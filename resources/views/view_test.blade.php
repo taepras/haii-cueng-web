@@ -13,7 +13,7 @@
 		<form class="form-horizontal text-left" method="post" action="" id="config-form">
 			{{csrf_field()}}
 			<div class="form-group">
-				<label class="col-sm-3">เลือกสถานี</label>
+				<label class="choose-date-label col-sm-3">เลือกสถานี</label>
 				<div class="col-sm-9">
 					@include('partials.station_selector')
 				</div>
@@ -31,10 +31,14 @@
 			<div class="form-group">
 				<div class="col-sm-9 col-sm-offset-3">
 					<p class="help-block">
+						@if($info_station['start_date'])
 						มีข้อมูลเฉพาะในช่วงวันที่
 						<b>{{date("d/m/Y", strtotime($info_station['start_date']))}}</b>
 						ถึงวันที่
 						<b>{{date("d/m/Y", strtotime($info_station['end_date']))}}</b>
+						@else
+						ไม่มีข้อมูลผลการทดสอบของสถานีนี้
+						@endif
 					</p>
 				</div>
 			</div>
@@ -47,6 +51,7 @@
 	</div>
 </div>
 <hr>
+@if($results)
 <div class="row">
 	<div class="col-sm-9">
 		<div id="chart"></div>
@@ -70,6 +75,13 @@
 		<a href="{{url().'/test_results'}}">&laquo; กลับไปหน้าเลือกสถานี</a>
 	</div>
 </div>
+@else
+<br>
+<h1>ไม่มีข้อมูลที่ท่านเลือก</h1>
+<p>กรุณาเลือกสถานีหรือช่วงเวลาใหม่</p>
+<br>
+<br>
+@endif
 @stop
 
 

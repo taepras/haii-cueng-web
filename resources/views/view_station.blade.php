@@ -1,11 +1,9 @@
 @extends('template.master')
 
-
 @section('page-header')
 <h1>ผลการพยากรณ์</h1>
 <p>ผลการพยากรณ์ล่วงหน้า 9 เดือน ณ สถานีตรวจวัดปริมาณน้ำฝน <b>{{$info_station['station_name']}}</b></p>
 @stop
-
 
 @section('content')
 <div class="row">
@@ -89,12 +87,24 @@
 				<h3>เลือกดูตัวแปรที่ใช้ทำนาย</h3>
 				<p>ตามข้อมูลจากระบบ NOAA CFSv2 Operational<sup><a href="">[?]</a></sup></p>
 				<div class="form-horizontal">
+					@if($user)
+					<div for="show_actual" class="form-group">
+						<label class="col-sm-3 control-label">ปริมาณฝนจริง</label>
+						<div class="col-sm-9" style="padding-top:7px">
+							@if(isset($hasActual) && $hasActual)
+							<input type="checkbox" name="show_actual" id="show_actual">
+							<label for="show_actual" class="choose-date-label">แสดงปริมาณฝนจริงบนกราฟ</label>
+							@else
+							ไม่มีข้อมูลปริมาณฝนจริงในช่วงเวลานี้
+							@endif
+						</div>
+					</div>
+					@endif
 					<div class="form-group">
 						<label for="show_variable" class="col-sm-3 control-label">ดูปริมาณฝนคู่กับ</label>
 						<div class="col-sm-9">
 							<select class="form-control" id="show_variable">
 								<option value="">แสดงปริมาณฝนที่ทำนายได้อย่างเดียว</option>
-								<option value="actual_rainfall">ปริมาณฝนจริงในวันดังกล่าว</option>
 								<option value="gph200">Geopotential Height ที่ระดับความสูง 200mb</option>
 								<option value="gph850">Geopotential Height ที่ระดับความสูง 850mb</option>
 								<option value="h200">Relative Humidity ที่ระดับความสูง 200mb</option>
@@ -121,7 +131,6 @@
 							</select>
 						</div>
 					</div>
-
 				</div>
 			</div>
 			<div class="col-sm-12 text-center">
@@ -136,6 +145,7 @@
 @section('script')
 <script>
 var dataset = {!! json_encode($data) !!};
+var chartInitialConfig, chartConfig, chart;
 
 $.getJSON( "{{asset('json/variable_description.json')}}", function( description ) {
 	if(!$.isEmptyObject(dataset)){
@@ -143,7 +153,7 @@ $.getJSON( "{{asset('json/variable_description.json')}}", function( description 
 		@foreach($data as $key => $val)
 		dataset.{{$key}} = ['{{$key}}'].concat(dataset.{{$key}});
 		@endforeach
-		var chartInitialConfig = {
+		chartInitialConfig = {
 			data: {
 				x: 'date',
 				columns: [
@@ -165,50 +175,31 @@ $.getJSON( "{{asset('json/variable_description.json')}}", function( description 
 			},
 			zoom: { enabled: true }
 		};
-		var chart = c3.generate(chartInitialConfig);
+		chart = c3.generate(chartInitialConfig);
 
-		function generateChart(varName){
+		function generateChart(varName, showActual){
+			showActual = typeof showActual !== 'undefined' ? showActual : false;
+
+			chartConfig = $.extend(true,{},chartInitialConfig);
+
 			if(varName){
-				var chartConfig = {
-					data: {
-						x: 'date',
-						columns: [
-							dataset.date,
-							dataset.predict_rainfall,
-							dataset[varName],
-						],
-						type: 'line',
-						axes: { predict_rainfall: 'y' }
-					},
-					axis: {
-						x: {
-							type: 'timeseries',
-							tick: { format: '%Y-%m-%d' }
-						},
-						y: {
-							label: 'rainfall (mm)',
-							position: 'outer-center'
-						},
-						y2: {
-							label: (
-								description[varName].desc +
-								' @' + description[varName].level +
-								', ' + description[varName].time + ' GMT' +
-								' (' + description[varName].unit + ')'
-							),
-							position: 'outer-center',
-							show: true
-						}
-					},
-					zoom: {
-						enabled: true
-					}
-				}
+				chartConfig.data.columns.push(dataset[varName]);
 				chartConfig.data.axes[varName] = 'y2';
-				chart = c3.generate(chartConfig);
-			} else {
-				chart = c3.generate(chartInitialConfig);
+				chartConfig.axis.y2 = {label: '', show: true};
+				chartConfig.axis.y2.label = (
+					description[varName].desc +
+					' @' + description[varName].level +
+					', ' + description[varName].time + ' GMT' +
+					' (' + description[varName].unit + ')'
+				);
 			}
+
+			if(showActual){
+				chartConfig.data.columns.push(dataset.actual_rainfall);
+				chartConfig.data.axes.actual_rainfall = 'y';
+			}
+
+			chart = c3.generate(chartConfig);
 		}
 	} else {
 		$('#chart').html("\
@@ -230,20 +221,15 @@ $.getJSON( "{{asset('json/variable_description.json')}}", function( description 
 		$('#end_date').val("{{$end_date}}");
 		@endif
 
-		$('#show_variable, #time').change(function(){
+		$('#show_variable, #time, #show_actual').change(function(){
 			var varString = $('#show_variable').val();
-			if(varString == 'actual_rainfall'){
-				var chartConfig = chartInitialConfig;
-				chartConfig.data.columns.push(dataset.actual_rainfall);
-				chartConfig.data.axes = { predict_rainfall: 'y', actual_rainfall: 'y' };
-				chart = c3.generate(chartConfig);
-			} else {
-				if(varString){
-					varString += "_";
-					varString += $('#time').val();
-				}
-				generateChart(varString);
+
+			if(varString){
+				varString += "_";
+				varString += $('#time').val();
 			}
+			var showActual = $('#show_actual').prop('checked');
+			generateChart(varString, showActual);
 		});
 
 		$('#config-form').attr('action', window.location.href + "#graph");

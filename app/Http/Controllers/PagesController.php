@@ -111,10 +111,13 @@ class PagesController extends Controller
         $variable_station = json_decode($b,true);
 
 		$dataset = [];
+		$hasActual = false;
 		for($i = 0; $i < count($variable_station); $i++){
 			foreach($variable_station[$i] as $var => $val){
 				$dataset[$var][$i] = $val;
 			}
+			if($dataset['actual_rainfall'])
+				$hasActual = true;
 		}
 
         return view('view_station')->with('b',$b)
@@ -124,7 +127,8 @@ class PagesController extends Controller
             ->with('station_id',$station_id)
             ->with('start_date',$start_date)
             ->with('end_date',$end_date)
-			->with('user', $user);
+			->with('user', $user)
+			->with('hasActual', $hasActual);
     }
 
     public function viewResults(){
