@@ -16,9 +16,8 @@ class PagesController extends Controller
 	const DEFAULT_STATION = "455601";
 
     public function main(){
-        Auth::logout();
-        Session::flush();
-        return view('main');
+		$user = Auth::user();
+        return view('main')->with('user', $user);
     }
 
     public function login(){
@@ -26,7 +25,7 @@ class PagesController extends Controller
         if($user != null)
             return redirect('/');
         $hasError = Session::get('hasError');
-        return view('login',compact('hasError'));
+        return view('login', compact('hasError'));
     }
 
     public function postLogin(){
@@ -43,13 +42,14 @@ class PagesController extends Controller
     {
         $user = Auth::user();
         if($user==null)
-            return redirect('/');
+            return Redirect::back();
         Auth::logout();
         Session::flush();
-        return redirect('/login');
+        return redirect('/');
     }
 
-    public function viewForecast(){;
+    public function viewForecast(){
+		$user = Auth::user();
 		$station_id = Input::get('id');
 		if(!$station_id)
 			$station_id = self::DEFAULT_STATION;
@@ -88,10 +88,12 @@ class PagesController extends Controller
         	->with('variable_station',$variable_station)
         	->with('station_id',$station_id)
         	->with('date', $date)
-            ->with('map_data',$map_data);
+            ->with('map_data',$map_data)
+			->with('user', $user);
     }
 
     public function viewForecastStation($station_id){
+		$user = Auth::user();
         $start_date = Input::get('start_date');
         $end_date = Input::get('end_date');
 
@@ -121,15 +123,20 @@ class PagesController extends Controller
             ->with('variable_station',$variable_station)
             ->with('station_id',$station_id)
             ->with('start_date',$start_date)
-            ->with('end_date',$end_date);
+            ->with('end_date',$end_date)
+			->with('user', $user);
     }
 
     public function viewResults(){
+		$user = Auth::user();
         $info_station = \App\StationInfo::orderBy('province', 'ASC')->get();
-        return view('view_test_map')->with('info_station', $info_station);
+        return view('view_test_map')
+			->with('info_station', $info_station)
+			->with('user', $user);
     }
 
     public function viewResultsStation($station_id){
+		$user = Auth::user();
         // $info_station = null;
         // $variable_station = null;
         // return view('view_test')->with('variable_station',$variable_station)->with('info_station',$info_station);
@@ -191,27 +198,28 @@ class PagesController extends Controller
         ->with('start_date', $start_date)
         ->with('end_date', $end_date)
         ->with('rmse', $rmse)
-        ->with('f1_score', $f1_score);
+        ->with('f1_score', $f1_score)
+		->with('user', $user);
         //->with('json_data', $data);
     }
 
     public function methodology(){
-        return view('methodology');
+		$user = Auth::user();
+        return view('methodology')->with('user', $user);
     }
 
     public function viewStation(){
-        return view('view_station');
+		$user = Auth::user();
+        return view('view_station')->with('user', $user);
     }
 
     public function about(){
-        return view('about');
-    }
-
-    public function login(){
-        return view('login');
+		$user = Auth::user();
+        return view('about')->with('user', $user);
     }
 
     public function changePassword(){
-        return view('change_password');
+		$user = Auth::user();
+        return view('change_password')->with('user', $user);
     }
 }

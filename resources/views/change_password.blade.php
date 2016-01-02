@@ -3,7 +3,7 @@
 
 @section('page-header')
 <h1>เปลี่ยนรหัสผ่าน</h1>
-<p>เปลี่ยนรหัสผ่านของบัญชี <b>admin</b></p>
+<p>เปลี่ยนรหัสผ่านของบัญชี <b>{{$user->username}}</b></p>
 @stop
 
 @section('content')
