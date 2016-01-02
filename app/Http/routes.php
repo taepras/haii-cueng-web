@@ -28,6 +28,7 @@ Route::get('/change_password_success', 'PagesController@changePasswordSuccess');
 Route::get('/downloads', 'PagesController@viewDownloads');
 Route::get('/downloads/stations.csv', 'PagesController@downloadStations');
 Route::get('/downloads/cfsv2/{station_id}.csv', 'PagesController@downloadCfs');
+Route::get('/downloads/{other}', 'PagesController@toDownloads');
 
 Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');

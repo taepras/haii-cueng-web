@@ -262,15 +262,21 @@ class PagesController extends Controller
 		return view('change_password_success')->with('user', $user);
 	}
 
+	public function toDownloads(){
+		return redirect('/downloads');
+	}
+
 	public function viewDownloads(){
 		$user = Auth::user();
+		if(!$user)
+			return redirect('/login');
 		return view('downloads')->with('user', $user);
 	}
 
-	public function downloadCfs($type, $station_id){
+	public function downloadCfs($station_id){
 		$user = Auth::user();
 		if(!$user)
-			return Redirect::back();
+			return redirect('/login');
 
 		$cfsv2ColumnNames = [
 			"id","station_id","date",
@@ -301,7 +307,7 @@ class PagesController extends Controller
 	public function downloadStations(){
 		$user = Auth::user();
 		if(!$user)
-			return Redirect::back();
+			return redirect('/login');
 
 		$StationInfoColumnNames = [
 			"id","station_id","station_name",
