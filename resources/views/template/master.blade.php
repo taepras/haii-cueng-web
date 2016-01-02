@@ -38,6 +38,17 @@
 						</ul>
 					</li>
 					<li><a href="{{url().'/about'}}">เกี่ยวกับโครงการ</a></li>
+					@if(isset($user) && $user)
+					<li>
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span class="glyphicon glyphicon-user"></span> {{$user->username}} <span class="caret"></span>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="{{url().'/change_password'}}">เปลี่ยนรหัสผ่าน</a></li>
+							<li><a href="{{url().'/logout'}}">ออกจากระบบ</a></li>
+						</ul>
+					</li>
+					@endif
 				</ul>
 			</div>
 		</div>
