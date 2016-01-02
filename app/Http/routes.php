@@ -29,6 +29,7 @@ Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::post('/test_results/{station_id}','PagesController@viewResultsStation');
 Route::post('/login','PagesController@postLogin');
+Route::post('/change_password', 'PagesController@changePassword');
 
 
 Route::get('d/{page}', function ($page) {

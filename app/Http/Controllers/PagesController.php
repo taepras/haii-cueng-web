@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Hash;
 
 class PagesController extends Controller
 {
@@ -233,11 +234,30 @@ class PagesController extends Controller
 
 	public function changePassword(){
 		$user = Auth::user();
-		return view('change_password')->with('user', $user);
+        if($user==null)
+            return redirect('/login');
+        $old_password = Input::get('old-password');
+        $new_password = Input::get('new-password');
+        $confirm_new_password = Input::get('confirm-new-password');
+        if(!$old_password && !$new_password && !$confirm_new_password)
+		    return view('change_password')->with('user', $user);
+        if(!$old_password || !$new_password || !$confirm_new_password)
+            return Redirect::back()->with('hasError',true);
+        if(!Hash::check($old_password,$user['password']))
+            return Redirect::back()->with('hasError',true);
+        if($new_password != $confirm_new_password)
+            return Redirect::back()->with('hasError',true);
+        $user->fill([
+            'password' => Hash::make($new_password)
+        ])->save();
+        return redirect('/change_password_success');
+
 	}
 
 	public function changePasswordSuccess(){
 		$user = Auth::user();
+        if($user==null)
+            return redirect('/login');
 		return view('change_password_success')->with('user', $user);
 	}
 }
