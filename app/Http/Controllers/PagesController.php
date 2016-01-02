@@ -164,16 +164,21 @@ class PagesController extends Controller
 
     public function methodology(){
         return view('methodology');
-        // return view('main');
     }
 
     public function viewStation(){
-        //    return view('methodology');
         return view('view_station');
     }
 
     public function about(){
         return view('about');
-        // return view('main');
+    }
+
+    public function login(){
+        return view('login');
+    }
+
+    public function changePassword(){
+        return view('change_password');
     }
 }

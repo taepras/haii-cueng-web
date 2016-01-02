@@ -19,6 +19,8 @@ Route::get('/test_results', 'PagesController@viewResults');
 Route::get('/test_results/{station_id}', 'PagesController@viewResultsStation');
 Route::get('/about', 'PagesController@About');
 Route::get('/station', 'PagesController@viewStation');
+Route::get('/login', 'PagesController@login');
+Route::get('/change_password', 'PagesController@changePassword');
 
 Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
