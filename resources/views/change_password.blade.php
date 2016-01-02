@@ -9,10 +9,12 @@
 @section('content')
 <div class="col-sm-6 col-sm-offset-3">
 	@if(isset($error))
-		@if($error = 'wrong password')
+		@if($error == 'wrong password')
 		<div class="alert alert-danger" role="alert"><b>รหัสผ่านเดิมไม่ถูกต้อง</b> กรุณาลองใหม่อีกครั้ง</div>
-		@elseif($error = 'password mismatch')
+		@elseif($error == 'password mismatch')
 		<div class="alert alert-danger" role="alert"><b>รหัสผ่านใหม่ไม่ตรงกัน</b> กรุณาลองใหม่อีกครั้ง</div>
+		@elseif($error == 'blank field')
+		<div class="alert alert-danger" role="alert">กรุณากรอกข้อมูลให้ครบทุกช่อง</div>
 		@endif
 	@endif
 	<form class="form-horizontal" method="post" action="{{url().'/change_password'}}">

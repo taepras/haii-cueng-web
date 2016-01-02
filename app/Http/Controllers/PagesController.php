@@ -239,25 +239,81 @@ class PagesController extends Controller
         $old_password = Input::get('old-password');
         $new_password = Input::get('new-password');
         $confirm_new_password = Input::get('confirm-new-password');
-        if(!$old_password && !$new_password && !$confirm_new_password)
+        if(!$old_password && !$new_password && !$confirm_new_password) {
 		    return view('change_password')->with('user', $user);
-        if(!$old_password || !$new_password || !$confirm_new_password)
-            return Redirect::back()->with('hasError',true);
-        if(!Hash::check($old_password,$user['password']))
-            return Redirect::back()->with('hasError',true);
-        if($new_password != $confirm_new_password)
-            return Redirect::back()->with('hasError',true);
-        $user->fill([
-            'password' => Hash::make($new_password)
-        ])->save();
-        return redirect('/change_password_success');
-
+		} elseif(!$old_password || !$new_password || !$confirm_new_password){
+            return view('change_password')->with('error', 'blank field')->with('user', $user);
+        } elseif(!Hash::check($old_password,$user['password'])){
+            return view('change_password')->with('error', 'wrong password')->with('user', $user);
+        } elseif($new_password != $confirm_new_password){
+            return view('change_password')->with('error', 'password mismatch')->with('user', $user);
+		} else{
+			$user->fill([
+	            'password' => Hash::make($new_password)
+	        ])->save();
+	        return redirect('/change_password_success');
+		}
 	}
 
 	public function changePasswordSuccess(){
 		$user = Auth::user();
-        if($user==null)
-            return redirect('/login');
+		if($user==null)
+			return redirect('/login');
 		return view('change_password_success')->with('user', $user);
+	}
+
+	public function viewDownloads(){
+		$user = Auth::user();
+		return view('downloads')->with('user', $user);
+	}
+
+	public function downloadCfs($type, $station_id){
+		$user = Auth::user();
+		if(!$user)
+			return Redirect::back();
+
+		$cfsv2ColumnNames = [
+			"id","station_id","date",
+
+			"gph200_0","gph850_0","h200_0","h850_0","p_msl_0","p_sfl_0",
+			"temp200_0","temp850_0","u200_0","u850_0","v200_0","v850_0",
+
+			"gph200_6","gph850_6","h200_6","h850_6","p_msl_6","p_sfl_6",
+			"temp200_6","temp850_6","u200_6","u850_6","v200_6","v850_6",
+
+			"gph200_12","gph850_12","h200_12","h850_12","p_msl_12","p_sfl_12",
+			"temp200_12","temp850_12","u200_12","u850_12","v200_12","v850_12",
+
+			"gph200_18","gph850_18","h200_18","h850_18","p_msl_18","p_sfl_18",
+			"temp200_18","temp850_18","u200_18","u850_18","v200_18","v850_18",
+
+			"actual_rainfall","predict_rainfall"
+		];
+
+		$table = \App\CFSv2::where('station_id', '=', $station_id)->get();
+		echo implode(",", $cfsv2ColumnNames);
+		foreach ($table as $row) {
+			echo "\n";
+			echo implode(",", $row->toArray());
+		}
+	}
+
+	public function downloadStations(){
+		$user = Auth::user();
+		if(!$user)
+			return Redirect::back();
+
+		$StationInfoColumnNames = [
+			"id","station_id","station_name",
+			"sub_district","district","province",
+			"latitude","longitude","f1_score","rmse"
+		];
+
+		$table = \App\StationInfo::all();
+		echo implode(",", $StationInfoColumnNames);
+		foreach ($table as $row) {
+			echo "\n";
+			echo implode(",", $row->toArray());
+		}
 	}
 }
