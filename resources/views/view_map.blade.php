@@ -14,7 +14,7 @@
 			<div class="col-sm-12">
 				<div class="form-inline">
 					{!! csrf_field() !!}
-					<label class="choose-date-label">เลือกดูข้อมูล ณ วันที่&nbsp;&nbsp;</label>
+					<label class="light-label">เลือกดูข้อมูล ณ วันที่&nbsp;&nbsp;</label>
 					<input type="date" class="form-control" name="date" id="date">
 					&nbsp;&nbsp;
 					<button type="submit" class="btn btn-primary">ดูข้อมูล &raquo;</button>
@@ -32,7 +32,7 @@
 		<div class="row">
 			<div class="col-sm-12 form-inline">
 				{{-- <div class=""> --}}
-				<label class="choose-date-label">เลือกดูข้อมูล ณ สถานี&nbsp;&nbsp;</label>
+				<label class="light-label">เลือกดูข้อมูล ณ สถานี&nbsp;&nbsp;</label>
 				@include('partials.station_selector', ['style' => 'max-width: 220px'])
 				&nbsp;&nbsp;
 				<button type="submit" class="btn btn-default">เลือกสถานี</button>

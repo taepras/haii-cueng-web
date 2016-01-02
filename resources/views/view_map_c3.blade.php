@@ -5,11 +5,11 @@
 <h1>ผลการพยากรณ์</h1>
 <form role="form" class="form-inline">
     <div class="row">
-        <label class="choose-date-label">เลือกดูปริมาณฝน ณ วันที่&nbsp;&nbsp;</label>
+        <label class="light-label">เลือกดูปริมาณฝน ณ วันที่&nbsp;&nbsp;</label>
         <input type="date" class="form-control">
     </div>
     <div class="row">
-        <label class="choose-date-label">สถานี&nbsp;&nbsp;</label>
+        <label class="light-label">สถานี&nbsp;&nbsp;</label>
         <select class="form-control" id="station">
             <option>--เลือกสถานี--</option>
             <option value="376202">MAE SOT แม่สอด</option>

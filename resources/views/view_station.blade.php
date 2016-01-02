@@ -12,17 +12,17 @@
 		<form class="form-horizontal text-left" method="post" action="" id="config-form">
 			{{csrf_field()}}
 			<div class="form-group">
-				<label class="choose-date-label col-sm-3">เลือกสถานี</label>
+				<label class="light-label col-sm-3">เลือกสถานี</label>
 				<div class="col-sm-9">
 					@include('partials.station_selector')
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="choose-date-label col-sm-3">ปริมาณฝน ตั้งแต่วันที่</label>
+				<label class="light-label col-sm-3">ปริมาณฝน ตั้งแต่วันที่</label>
 				<div class="col-sm-4">
 					<input type="date" class="form-control" name="start_date" id="start_date">
 				</div>
-				<label class="choose-date-label col-sm-1">ถึง</label>
+				<label class="light-label col-sm-1">ถึง</label>
 				<div class="col-sm-4">
 					<input type="date" class="form-control" name="end_date" id="end_date">
 				</div>
@@ -93,7 +93,7 @@
 						<div class="col-sm-9" style="padding-top:7px">
 							@if(isset($hasActual) && $hasActual)
 							<input type="checkbox" name="show_actual" id="show_actual">
-							<label for="show_actual" class="choose-date-label">แสดงปริมาณฝนจริงบนกราฟ</label>
+							<label for="show_actual" class="light-label">แสดงปริมาณฝนจริงบนกราฟ</label>
 							@else
 							ไม่มีข้อมูลปริมาณฝนจริงในช่วงเวลานี้
 							@endif
