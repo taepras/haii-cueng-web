@@ -12,6 +12,8 @@
 */
 
 Route::get('/', 'PagesController@main');
+Route::get('/login','PagesController@login');
+Route::get('/logout','PagesController@logout');
 Route::get('/forecast', 'PagesController@viewForecast');
 Route::get('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::get('/methodology', 'PagesController@methodology');
@@ -25,6 +27,7 @@ Route::get('/change_password', 'PagesController@changePassword');
 Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::post('/test_results/{station_id}','PagesController@viewResultsStation');
+Route::post('/login','PagesController@postLogin');
 
 
 Route::get('d/{page}', function ($page) {
