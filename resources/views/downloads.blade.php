@@ -2,7 +2,7 @@
 
 
 @section('page-header')
-<h1 style="margin-bottom:-15px;">ดาวน์โหลดข้อมูลเป็นไฟล์ .CSV</h1>
+<h1 style="margin-bottom:-15px;">ดาวน์โหลด</h1>
 @stop
 
 
@@ -14,7 +14,7 @@
 		<br>
 		<form role="form" class="form-horizontal" id="download-cfs-form">
 			<div class="form-group">
-				<label class="col-sm-3">เลือกสถานีที่ต้องการ</label>
+				<label class="col-sm-3">เลือกสถานี</label>
 				<div class="col-sm-9">
 					@include('partials.station_selector')
 				</div>

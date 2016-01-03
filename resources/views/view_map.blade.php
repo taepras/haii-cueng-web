@@ -31,18 +31,15 @@
 
 		<div class="row">
 			<div class="col-sm-12 form-inline">
-				{{-- <div class=""> --}}
 				<label class="light-label">เลือกดูข้อมูล ณ สถานี&nbsp;&nbsp;</label>
 				@include('partials.station_selector', ['style' => 'max-width: 220px'])
 				&nbsp;&nbsp;
 				<button type="submit" class="btn btn-default">เลือกสถานี</button>
-				{{-- </div> --}}
 			</div>
 		</div>
 		<hr>
 		<div class="row">
 			<div class="col-sm-6">
-
 				<p>สถานีตรวจวัดปริมาณฝน</p>
 				<h3 class="station-name"><b>{{$info_station['station_name']}}</b></h3>
 				<div>
@@ -67,7 +64,6 @@
 							<th>มีข้อมูลถึงวันที่</th>
 							<td>{{date("d/m/Y", strtotime($info_station['end_date']))}}</td>
 						</tr>
-
 					</table>
 				</div>
 			</div>
@@ -76,12 +72,12 @@
 					ผลการพยากรณ์<br>
 					ปริมาณฝน ณ วันที่ {{date("d/m/Y", strtotime($date))}}
 				</p>
-				<h1 class="huge-text" id="rainfall">{{ round($variable_station['predict_rainfall'], 1) }}</h1>
+				<h1 class="huge-text" id="rainfall">{{ $no_data ? 'N/A' : round($variable_station['predict_rainfall'], 1) }}</h1>
 				<p>
 					มิลลิเมตร{{--<sup><a href="">[?]</a></sup>--}}
 					<span id="droplets"></span>
 				</p>
-				@if(isset($variable_station['actual_rainfall']))
+				@if(isset($variable_station['actual_rainfall']) && $user && !$no_data)
 				<p>
 					<b>ปริมาณฝนจริง</b> {{round($variable_station['actual_rainfall'], 2)}} มิลลิเมตร
 					<br><b>ทำนายคลาดเคลื่อน</b> <span class="text-danger">{{round(abs($variable_station['actual_rainfall'] - $variable_station['predict_rainfall']), 2)}}</span> มิลลิเมตร
@@ -123,109 +119,109 @@
 							<td>Geopotential Height</td>
 							<td>200mb</td>
 							<td class="time">00 GMT</td>
-							<td id="gph-200" class="t00">{{ round($variable_station['gph200_0'], 2) }} m</td>
-							<td id="gph-200" class="t06">{{ round($variable_station['gph200_6'], 2) }} m</td>
-							<td id="gph-200" class="t12">{{ round($variable_station['gph200_12'], 2) }} m</td>
-							<td id="gph-200" class="t18">{{ round($variable_station['gph200_18'], 2) }} m</td>
+							<td id="gph-200" class="t00">{{ $no_data ? 'N/A' : round($variable_station['gph200_0'], 2) }} m</td>
+							<td id="gph-200" class="t06">{{ $no_data ? 'N/A' : round($variable_station['gph200_6'], 2) }} m</td>
+							<td id="gph-200" class="t12">{{ $no_data ? 'N/A' : round($variable_station['gph200_12'], 2) }} m</td>
+							<td id="gph-200" class="t18">{{ $no_data ? 'N/A' : round($variable_station['gph200_18'], 2) }} m</td>
 						</tr>
 						<tr>
 							<td>Geopotential Height</td>
 							<td>850mb</td>
 							<td class="time">00 GMT</td>
-							<td id="gph-850" class="t00">{{ round($variable_station['gph850_0'], 2) }} m</td>
-							<td id="gph-850" class="t06">{{ round($variable_station['gph850_6'], 2) }} m</td>
-							<td id="gph-850" class="t12">{{ round($variable_station['gph850_12'], 2) }} m</td>
-							<td id="gph-850" class="t18">{{ round($variable_station['gph850_18'], 2) }} m</td>
+							<td id="gph-850" class="t00">{{ $no_data ? 'N/A' : round($variable_station['gph850_0'], 2) }} m</td>
+							<td id="gph-850" class="t06">{{ $no_data ? 'N/A' : round($variable_station['gph850_6'], 2) }} m</td>
+							<td id="gph-850" class="t12">{{ $no_data ? 'N/A' : round($variable_station['gph850_12'], 2) }} m</td>
+							<td id="gph-850" class="t18">{{ $no_data ? 'N/A' : round($variable_station['gph850_18'], 2) }} m</td>
 						</tr>
 						<tr>
 							<td>Relative Humidity</td>
 							<td>200mb</td>
 							<td class="time">00 GMT</td>
-							<td id="humidity-200" class="t00">{{ round($variable_station['h200_0'], 2) }}%</td>
-							<td id="humidity-200" class="t06">{{ round($variable_station['h200_6'], 2) }}%</td>
-							<td id="humidity-200" class="t12">{{ round($variable_station['h200_12'], 2) }}%</td>
-							<td id="humidity-200" class="t18">{{ round($variable_station['h200_18'], 2) }}%</td>
+							<td id="humidity-200" class="t00">{{ $no_data ? 'N/A' : round($variable_station['h200_0'], 2) }}%</td>
+							<td id="humidity-200" class="t06">{{ $no_data ? 'N/A' : round($variable_station['h200_6'], 2) }}%</td>
+							<td id="humidity-200" class="t12">{{ $no_data ? 'N/A' : round($variable_station['h200_12'], 2) }}%</td>
+							<td id="humidity-200" class="t18">{{ $no_data ? 'N/A' : round($variable_station['h200_18'], 2) }}%</td>
 						</tr>
 						<tr>
 							<td>Relative Humidity</td>
 							<td>850mb</td>
 							<td class="time">00 GMT</td>
-							<td id="humidity-850" class="t00">{{ round($variable_station['h850_0'], 2) }}%</td>
-							<td id="humidity-850" class="t06">{{ round($variable_station['h850_6'], 2) }}%</td>
-							<td id="humidity-850" class="t12">{{ round($variable_station['h850_12'], 2) }}%</td>
-							<td id="humidity-850" class="t18">{{ round($variable_station['h850_18'], 2) }}%</td>
+							<td id="humidity-850" class="t00">{{ $no_data ? 'N/A' : round($variable_station['h850_0'], 2) }}%</td>
+							<td id="humidity-850" class="t06">{{ $no_data ? 'N/A' : round($variable_station['h850_6'], 2) }}%</td>
+							<td id="humidity-850" class="t12">{{ $no_data ? 'N/A' : round($variable_station['h850_12'], 2) }}%</td>
+							<td id="humidity-850" class="t18">{{ $no_data ? 'N/A' : round($variable_station['h850_18'], 2) }}%</td>
 						</tr>
 						<tr>
 							<td>Pressure</td>
 							<td>Mean Sea Level</td>
 							<td class="time">00 GMT</td>
-							<td id="pressure-meansea" class="t00">{{ round($variable_station['p_msl_0'], 2) }} Pa</td>
-							<td id="pressure-meansea" class="t06">{{ round($variable_station['p_msl_6'], 2) }} Pa</td>
-							<td id="pressure-meansea" class="t12">{{ round($variable_station['p_msl_12'], 2) }} Pa</td>
-							<td id="pressure-meansea" class="t18">{{ round($variable_station['p_msl_18'], 2) }} Pa</td>
+							<td id="pressure-meansea" class="t00">{{ $no_data ? 'N/A' : round($variable_station['p_msl_0'], 2) }} Pa</td>
+							<td id="pressure-meansea" class="t06">{{ $no_data ? 'N/A' : round($variable_station['p_msl_6'], 2) }} Pa</td>
+							<td id="pressure-meansea" class="t12">{{ $no_data ? 'N/A' : round($variable_station['p_msl_12'], 2) }} Pa</td>
+							<td id="pressure-meansea" class="t18">{{ $no_data ? 'N/A' : round($variable_station['p_msl_18'], 2) }} Pa</td>
 						</tr>
 						<tr>
 							<td>Pressure</td>
 							<td>Surface Level</td>
 							<td class="time">00 GMT</td>
-							<td id="pressure-surface" class="t00">{{ round($variable_station['p_sfl_0'], 2) }} Pa</td>
-							<td id="pressure-surface" class="t06">{{ round($variable_station['p_sfl_6'], 2) }} Pa</td>
-							<td id="pressure-surface" class="t12">{{ round($variable_station['p_sfl_12'], 2) }} Pa</td>
-							<td id="pressure-surface" class="t18">{{ round($variable_station['p_sfl_18'], 2) }} Pa</td>
+							<td id="pressure-surface" class="t00">{{ $no_data ? 'N/A' : round($variable_station['p_sfl_0'], 2) }} Pa</td>
+							<td id="pressure-surface" class="t06">{{ $no_data ? 'N/A' : round($variable_station['p_sfl_6'], 2) }} Pa</td>
+							<td id="pressure-surface" class="t12">{{ $no_data ? 'N/A' : round($variable_station['p_sfl_12'], 2) }} Pa</td>
+							<td id="pressure-surface" class="t18">{{ $no_data ? 'N/A' : round($variable_station['p_sfl_18'], 2) }} Pa</td>
 						</tr>
 						<tr>
 							<td>Temperature</td>
 							<td>200 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="temp-200" class="t00">{{ round($variable_station['temp200_0'], 2) }} K</td>
-							<td id="temp-200" class="t06">{{ round($variable_station['temp200_6'], 2) }} K</td>
-							<td id="temp-200" class="t12">{{ round($variable_station['temp200_12'], 2) }} K</td>
-							<td id="temp-200" class="t18">{{ round($variable_station['temp200_18'], 2) }} K</td>
+							<td id="temp-200" class="t00">{{ $no_data ? 'N/A' : round($variable_station['temp200_0'], 2) }} K</td>
+							<td id="temp-200" class="t06">{{ $no_data ? 'N/A' : round($variable_station['temp200_6'], 2) }} K</td>
+							<td id="temp-200" class="t12">{{ $no_data ? 'N/A' : round($variable_station['temp200_12'], 2) }} K</td>
+							<td id="temp-200" class="t18">{{ $no_data ? 'N/A' : round($variable_station['temp200_18'], 2) }} K</td>
 						</tr>
 						<tr>
 							<td>Temperature</td>
 							<td>850 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="temp-850" class="t00">{{ round($variable_station['temp850_0'], 2) }} K</td>
-							<td id="temp-850" class="t06">{{ round($variable_station['temp850_6'], 2) }} K</td>
-							<td id="temp-850" class="t12">{{ round($variable_station['temp850_12'], 2) }} K</td>
-							<td id="temp-850" class="t18">{{ round($variable_station['temp850_18'], 2) }} K</td>
+							<td id="temp-850" class="t00">{{ $no_data ? 'N/A' : round($variable_station['temp850_0'], 2) }} K</td>
+							<td id="temp-850" class="t06">{{ $no_data ? 'N/A' : round($variable_station['temp850_6'], 2) }} K</td>
+							<td id="temp-850" class="t12">{{ $no_data ? 'N/A' : round($variable_station['temp850_12'], 2) }} K</td>
+							<td id="temp-850" class="t18">{{ $no_data ? 'N/A' : round($variable_station['temp850_18'], 2) }} K</td>
 						</tr>
 						<tr>
 							<td>U-Component of Wind</td>
 							<td>200 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="uwind-200" class="t00">{{ round($variable_station['u200_0'], 2) }} m/s</td>
-							<td id="uwind-200" class="t06">{{ round($variable_station['u200_6'], 2) }} m/s</td>
-							<td id="uwind-200" class="t12">{{ round($variable_station['u200_12'], 2) }} m/s</td>
-							<td id="uwind-200" class="t18">{{ round($variable_station['u200_18'], 2) }} m/s</td>
+							<td id="uwind-200" class="t00">{{ $no_data ? 'N/A' : round($variable_station['u200_0'], 2) }} m/s</td>
+							<td id="uwind-200" class="t06">{{ $no_data ? 'N/A' : round($variable_station['u200_6'], 2) }} m/s</td>
+							<td id="uwind-200" class="t12">{{ $no_data ? 'N/A' : round($variable_station['u200_12'], 2) }} m/s</td>
+							<td id="uwind-200" class="t18">{{ $no_data ? 'N/A' : round($variable_station['u200_18'], 2) }} m/s</td>
 						</tr>
 						<tr>
 							<td>U-Component of Wind</td>
 							<td>850 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="uwind-850" class="t00">{{ round($variable_station['u850_0'], 2) }} m/s</td>
-							<td id="uwind-850" class="t06">{{ round($variable_station['u850_6'], 2) }} m/s</td>
-							<td id="uwind-850" class="t12">{{ round($variable_station['u850_12'], 2) }} m/s</td>
-							<td id="uwind-850" class="t18">{{ round($variable_station['u850_18'], 2) }} m/s</td>
+							<td id="uwind-850" class="t00">{{ $no_data ? 'N/A' : round($variable_station['u850_0'], 2) }} m/s</td>
+							<td id="uwind-850" class="t06">{{ $no_data ? 'N/A' : round($variable_station['u850_6'], 2) }} m/s</td>
+							<td id="uwind-850" class="t12">{{ $no_data ? 'N/A' : round($variable_station['u850_12'], 2) }} m/s</td>
+							<td id="uwind-850" class="t18">{{ $no_data ? 'N/A' : round($variable_station['u850_18'], 2) }} m/s</td>
 						</tr>
 						<tr>
 							<td>V-Component of Wind</td>
 							<td>200 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="vwind-200" class="t00">{{ round($variable_station['v200_0'], 2) }} m/s</td>
-							<td id="vwind-200" class="t06">{{ round($variable_station['v200_6'], 2) }} m/s</td>
-							<td id="vwind-200" class="t12">{{ round($variable_station['v200_12'], 2) }} m/s</td>
-							<td id="vwind-200" class="t18">{{ round($variable_station['v200_18'], 2) }} m/s</td>
+							<td id="vwind-200" class="t00">{{ $no_data ? 'N/A' : round($variable_station['v200_0'], 2) }} m/s</td>
+							<td id="vwind-200" class="t06">{{ $no_data ? 'N/A' : round($variable_station['v200_6'], 2) }} m/s</td>
+							<td id="vwind-200" class="t12">{{ $no_data ? 'N/A' : round($variable_station['v200_12'], 2) }} m/s</td>
+							<td id="vwind-200" class="t18">{{ $no_data ? 'N/A' : round($variable_station['v200_18'], 2) }} m/s</td>
 						</tr>
 						<tr>
 							<td>V-Component of Wind</td>
 							<td>850 mb</td>
 							<td class="time">00 GMT</td>
-							<td id="vwind-850" class="t00">{{ round($variable_station['v850_0'], 2) }} m/s</td>
-							<td id="vwind-850" class="t06">{{ round($variable_station['v850_6'], 2) }} m/s</td>
-							<td id="vwind-850" class="t12">{{ round($variable_station['v850_12'], 2) }} m/s</td>
-							<td id="vwind-850" class="t18">{{ round($variable_station['v850_18'], 2) }} m/s</td>
+							<td id="vwind-850" class="t00">{{ $no_data ? 'N/A' : round($variable_station['v850_0'], 2) }} m/s</td>
+							<td id="vwind-850" class="t06">{{ $no_data ? 'N/A' : round($variable_station['v850_6'], 2) }} m/s</td>
+							<td id="vwind-850" class="t12">{{ $no_data ? 'N/A' : round($variable_station['v850_12'], 2) }} m/s</td>
+							<td id="vwind-850" class="t18">{{ $no_data ? 'N/A' : round($variable_station['v850_18'], 2) }} m/s</td>
 						</tr>
 					</tbody>
 				</table>

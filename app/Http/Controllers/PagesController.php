@@ -70,13 +70,14 @@ class PagesController extends Controller
 		}
 		$b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)->first();
 		$variable_station = json_decode($b,true);
-		if(!$user){
+		if(!$user && $variable_station){
 			foreach ($variable_station as $row) {
 				if(isset($row['actual_rainfall'])){
 					unset($row['actual_rainfall']);
 				}
 			}
 		}
+		$no_data = !$variable_station;
 
 		$map_data = \App\CFSV2::where('date','=',$date)
 			->join('station_infos','cfsv2s.station_id','=','station_infos.station_id')
@@ -96,7 +97,8 @@ class PagesController extends Controller
 			->with('station_id',$station_id)
 			->with('date', $date)
 			->with('map_data',$map_data)
-			->with('user', $user);
+			->with('user', $user)
+			->with('no_data', $no_data);
 	}
 
 	public function viewForecastStation($station_id){

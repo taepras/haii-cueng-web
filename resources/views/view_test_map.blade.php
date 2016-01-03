@@ -146,7 +146,7 @@ f1_y.overrideMin = 6;
 f1_y.overrideMax = 20;
 f1_y.clamp = false;
 f1_z.overrideMin = -20;
-f1_z.overrideMax = 300;
+f1_z.overrideMax = 350;
 f1_c.overrideMin = 0;
 f1_c.overrideMax = 100;
 f1_chart.addSeries(["latitude", "station_id", "station_name"], dimple.plot.bubble);
@@ -182,22 +182,18 @@ $(document).ready(function(){
 
 	$('#f1_score-chart').hide();
 
-	$('#rmse, #f1_score').click(function(e){
-		e.preventDefault();
-		var _this = $(this);
-		$('#rmse, #f1_score').removeClass('active', function(){
-			$('#' + _this.attr('id')).addClass('active');
-		});
-	});
-
 	$('#rmse').click(function(e){
 		e.preventDefault();
+		$(this).addClass('active');
+		$('#f1_score').removeClass('active');
 		$('#rmse-chart').show();
 		$('#f1_score-chart').hide();
 	});
 
 	$('#f1_score').click(function(e){
 		e.preventDefault();
+		$(this).addClass('active');
+		$('#rmse').removeClass('active');
 		$('#f1_score-chart').show();
 		$('#rmse-chart').hide();
 	});
