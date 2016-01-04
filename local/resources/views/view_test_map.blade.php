@@ -111,7 +111,11 @@ function updatePage(){
 
 var data = {!! json_encode($info_station) !!};
 
-var rmse_svg = dimple.newSvg("#rmse-chart", 380, 700);
+var w = $('#rmse-chart').width();
+
+console.log(w, 14/8*w);
+
+var rmse_svg = dimple.newSvg("#rmse-chart", w, 14/8*w);
 var rmse_chart = new dimple.chart(rmse_svg, data);
 rmse_chart.setMargins("10px","20px","0px","0px");
 // rmse_chart.setMargins("40px","20px","20px","40px");
@@ -133,7 +137,7 @@ rmse_c.overrideMax = 20;
 rmse_chart.addSeries(["latitude", "station_id", "station_name"], dimple.plot.bubble);
 rmse_chart.draw();
 
-var f1_svg = dimple.newSvg("#f1_score-chart", 380, 700);
+var f1_svg = dimple.newSvg("#f1_score-chart", w, 14/8*w);
 var f1_chart = new dimple.chart(f1_svg, data);
 f1_chart.setMargins("10px","20px","0px","0px");
 var f1_x = f1_chart.addMeasureAxis("x", "longitude");

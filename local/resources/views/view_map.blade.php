@@ -18,6 +18,12 @@
 					<input type="date" class="form-control" name="date" id="date">
 					&nbsp;&nbsp;
 					<button type="submit" class="btn btn-primary">ดูข้อมูล &raquo;</button>
+					<p class="help-block" style="margin-top:10px;">
+						มีข้อมูลเฉพาะในช่วงวันที่
+						<b>{{date("d/m/Y", strtotime($min_date))}}</b>
+						ถึงวันที่
+						<b>{{date("d/m/Y", strtotime($max_date))}}</b>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -40,32 +46,7 @@
 		<hr>
 		<div class="row">
 			<div class="col-sm-6">
-				<p>สถานีตรวจวัดปริมาณฝน</p>
-				<h3 class="station-name"><b>{{$info_station['station_name']}}</b></h3>
-				<div>
-					<table class="table text-left">
-						<tr>
-							<th>ตำบล</th>
-							<td>{{$info_station['sub_district']}}</td>
-						</tr>
-						<tr>
-							<th>อำเภอ</th>
-							<td>{{$info_station['district']}}</td>
-						</tr>
-						<tr>
-							<th>จังหวัด</th>
-							<td>{{$info_station['province']}}</td>
-						</tr>
-						<tr>
-							<th>มีข้อมูลตั้งแต่วันที่</th>
-							<td>{{date("d/m/Y", strtotime($info_station['start_date']))}}</td>
-						</tr>
-						<tr>
-							<th>มีข้อมูลถึงวันที่</th>
-							<td>{{date("d/m/Y", strtotime($info_station['end_date']))}}</td>
-						</tr>
-					</table>
-				</div>
+				@include('partials.station_info_table')
 			</div>
 			<div class="col-sm-6">
 				<p>
@@ -276,7 +257,8 @@ $(document).ready(function(){
 	});
 });
 
-var svg = dimple.newSvg("#chart", 380, 700);
+var w = $('#chart').width();
+var svg = dimple.newSvg("#chart", w, 14/8*w);
 var data = {!! json_encode($map_data) !!};
 for(d of data){
 	if(d.station_id == "{{$station_id}}")

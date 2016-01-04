@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Rain Prediction using R</title>
+	<title>การศึกษาการพยากรณ์ปริมาณฝนรายวันในประเทศไทย ด้วยข้อมูลภูมิอากาศจาก CFSv2 และข้อมูลฝนกรมจากอุตุนิยมวิทยา</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<script src="{{url().'/js/jquery-1.11.3.min.js'}}" charset="utf-8"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-	<link href="{{url().'/css/c3.min.css'}}" rel="stylesheet" type="text/css">
-	<link href="{{url().'/css/haii-web.css'}}" rel="stylesheet" type="text/css">
-	<link href="{{url().'/fonts/boon.css'}}" rel="stylesheet" type="text/css">
-	<script src="{{url().'/js/d3.min.js'}}" charset="utf-8"></script>
-	<script src="{{url().'/js/c3.min.js'}}"></script>
-	<script src="{{url().'/js/dimple.latest.min.js'}}"></script>
+	<script src="{{asset('/js/jquery-1.11.3.min.js')}}" charset="utf-8"></script>
+	<link  href="{{asset('/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
+	<link  href="{{asset('/fonts/boon.css')}}" rel="stylesheet" type="text/css">
+	<link  href="{{asset('/css/c3.min.css')}}" rel="stylesheet" type="text/css">
+	<link  href="{{asset('/css/haii-web.css')}}" rel="stylesheet" type="text/css">
+	<script src="{{asset('/js/bootstrap.js')}}" charset="utf-8"></script>
+	<script src="{{asset('/js/d3.min.js')}}" charset="utf-8"></script>
+	<script src="{{asset('/js/c3.min.js')}}" charset="utf-8"></script>
+	<script src="{{asset('/js/dimple.latest.min.js')}}" charset="utf-8"></script>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -22,7 +23,7 @@
 					<span class="sr-only">Toggle navigation</span>
 					MENU <span class="caret"></span>
 				</button>
-				<a class="navbar-brand visible-xs" href="#">ระบบพยากรณ์ปริมาณฝนฯ</a>
+				<a class="navbar-brand visible-xs" href="{{url()}}">การพยากรณ์ปริมาณฝนฯ</a>
 			</div>
 			<div class="collapse navbar-collapse" id="main-nav">
 				<ul class="nav navbar-nav">
@@ -69,8 +70,10 @@
 		<div class="row">
 			<div class="col-sm-12 text-center">
 				<img src="{{url().'/img/logo_haii.gif'}}" style="height:100px; max-width:90%">
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<img src="{{url().'/img/logo_chulaengineering.png'}}" style="height:50px; max-width:90%">
+				<span class="hidden-xs">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+				<br class="visible-xs">
+				<br class="visible-xs">
+				<img src="{{url().'/img/logo_chulaengineering.png'}}" style="max-height:50px; max-width:90%">
 			</div>
 		</div>
 		<div class="row">

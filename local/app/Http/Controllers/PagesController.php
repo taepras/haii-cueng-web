@@ -53,20 +53,25 @@ class PagesController extends Controller
 		$user = Auth::user();
 		$station_id = Input::get('id');
 		if(!$station_id)
-		$station_id = self::DEFAULT_STATION;
+			$station_id = self::DEFAULT_STATION;
 
 		$a = \App\StationInfo::where('station_id','=',$station_id)->first();
 		$info_station = json_decode($a, true);
 		$info_station['start_date'] = \App\CFSv2::where('station_id', '=', $station_id)->min('date');
 		$info_station['end_date']   = \App\CFSv2::where('station_id', '=', $station_id)->max('date');
 
+		$min_date = \App\CFSv2::min('date');
+		$max_date   = \App\CFSv2::max('date');
+
 		$date = Input::get('date');
 		if(!$date){
 			$today = date('Y-m-d');
-			if($info_station['start_date'] <= $today && $today <= $info_station['end_date'])
-			$date = $today;
+			if($min_date <= $today && $today <= $max_date)
+				$date = $today;
+			elseif($max_date <= $today)
+				$date = $max_date;
 			else
-			$date = $info_station['end_date'];
+				$date = $min_date;
 		}
 		$b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)->first();
 		$variable_station = json_decode($b,true);
@@ -97,6 +102,8 @@ class PagesController extends Controller
 			->with('station_id',$station_id)
 			->with('date', $date)
 			->with('map_data',$map_data)
+			->with('min_date',$min_date)
+			->with('max_date',$max_date)
 			->with('user', $user)
 			->with('no_data', $no_data);
 	}
@@ -203,7 +210,7 @@ class PagesController extends Controller
 			if($user){
 				$results[$i]['actual_rainfall'] = $variable_station[$i]['actual_rainfall'];
 			}
-			$results[$i]['error'] = abs($results[$i]['predict_rainfall'] - $results[$i]['actual_rainfall']);
+			$results[$i]['error'] = abs($results[$i]['predict_rainfall'] - $variable_station[$i]['actual_rainfall']);
 		}
 
 		// echo var_dump($results);
@@ -323,5 +330,30 @@ class PagesController extends Controller
 			echo "\n";
 			echo implode(",", $row->toArray());
 		}
+	}
+
+	public function viewUpload(){
+		$user = Auth::user();
+		if(!$user)
+			return redirect('/login');
+		return view('upload')->with('user', $user);
+	}
+
+	public function postUpload(){
+		$user = Auth::user();
+		if(!$user)
+			return redirect('/login');
+
+		if (Input::hasFile('file')){
+
+			$file = Input::file('file');
+			$name = time() . '-' . $file->getClientOriginalName();
+			// Moves file to folder on server
+			$file->move(public_path() . '/uploads/', $name);
+
+			return var_dump($file); // return for testing
+
+	     }
+		return view('upload')->with('user', $user);
 	}
 }

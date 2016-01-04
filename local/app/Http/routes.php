@@ -29,12 +29,14 @@ Route::get('/downloads', 'PagesController@viewDownloads');
 Route::get('/downloads/stations.csv', 'PagesController@downloadStations');
 Route::get('/downloads/cfsv2/{station_id}.csv', 'PagesController@downloadCfs');
 Route::get('/downloads/{other}', 'PagesController@toDownloads');
+Route::get('/upload', 'PagesController@viewUpload');
 
 Route::post('/forecast', 'PagesController@viewForecast');
 Route::post('/forecast/{station_id}', 'PagesController@viewForecastStation');
 Route::post('/test_results/{station_id}','PagesController@viewResultsStation');
 Route::post('/login','PagesController@postLogin');
 Route::post('/change_password', 'PagesController@changePassword');
+Route::post('/upload', 'PagesController@postUpload');
 
 
 Route::get('d/{page}', function ($page) {

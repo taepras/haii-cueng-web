@@ -66,3 +66,10 @@ svg{max-width:100%}
     color:#ddd;
 }
 td{vertical-align: middle !important;}
+
+@media (max-width: 480px){
+	body{
+		padding: 0 20px;
+	}
+	nav.navbar{margin:0 -20px;}
+}

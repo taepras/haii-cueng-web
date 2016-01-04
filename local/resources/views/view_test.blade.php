@@ -53,10 +53,27 @@
 <hr>
 @if($results)
 <div class="row">
-	<div class="col-sm-9">
+	<div class="col-sm-12">
 		<div id="chart"></div>
 	</div>
-	<div class="col-sm-3 text-center">
+</div>
+<hr>
+<div class="row">
+	<div class="col-sm-4">
+		@include('partials.station_info_table')
+	</div>
+	<div class="col-sm-4">
+		<p>Root Mean Square Error (RMSE)</p>
+		<h1 class="huge-text" id="rmse-value">{{round($rmse, 2)}}</h1>
+		<p>มิลลิเมตร</p>
+		<p>RMSE ของสถานีนี้จากการทดสอบ <b>{{round($info_station['rmse'], 2)}} mm</b></p>
+	</div>
+	<div class="col-sm-4">
+		<p>F1 Score</p>
+		<h1 class="huge-text" id="f1_score-value">{{round($f1_score * 100,2)}}%</h1>
+		<p>F1 Score เฉลี่ยของสถานีนี้จากการทดสอบ <b>{{round($info_station['f1_score'], 2)}}%</b></p>
+	</div>
+	{{-- <div class="col-sm-3 text-center">
 		<h4><b>ค่าสถิติของส่วนที่เลือก</b></h4>
 		<p>F1 Score</p>
 		<h1 class="huge-text">{{round($f1_score * 100,2)}}%</h1>
@@ -65,10 +82,10 @@
 		<h1 class="huge-text">{{round($rmse, 2)}}</h1>
 		<p>มิลลิเมตร</p>
 		<hr>
-		{{-- TODO add F1 & rmse column of each stations to stations table in database --}}
+
 		<p>F1 Score เฉลี่ยของสถานีนี้ <b>{{$info_station['f1_score']}}%</b></p>
 		<p>RMSE เฉลี่ยของสถานีนี้ <b>{{$info_station['rmse']}} mm</b></p>
-	</div>
+	</div> --}}
 </div>
 <div class="row">
 	<div class="col-sm-12">
@@ -113,10 +130,9 @@ var chart = c3.generate({
 	data: {
 		x: 'date',
 		json: {!! json_encode($results) !!},
-		// url: '{{url().'/test/300201_edited_s.csv'}}',
 		type: 'line',
 		keys: {
-			x: 'date', // it's possible to specify 'x' when category axis
+			x: 'date',
 			value: ['predict_rainfall', 'actual_rainfall', 'error'],
 		},
 		hide: ['error'],
