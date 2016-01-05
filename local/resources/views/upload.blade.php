@@ -32,6 +32,13 @@
 		</form>
 	</div>
 </div>
+<hr>
+<div class="row">
+	<div class="col-sm-6 col-sm-offset-3">
+		<h4><b>ไฟล์ csv ที่รองรับ</b></h4>
+		<p>...</p>
+	</div>
+</div>
 
 @stop
 

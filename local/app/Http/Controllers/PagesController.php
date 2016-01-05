@@ -345,7 +345,6 @@ class PagesController extends Controller
 			return redirect('/login');
 
 		if (Input::hasFile('file')){
-
 			$cfsv2ColumnNames = [
 				"station_id","date",
 
@@ -363,7 +362,6 @@ class PagesController extends Controller
 
 				"actual_rainfall","predict_rainfall"
 			];
-
 			$file = Input::file('file');
 			$name = time() . '-' . $file->getClientOriginalName();
 			$new_path = public_path() . '/uploads/';

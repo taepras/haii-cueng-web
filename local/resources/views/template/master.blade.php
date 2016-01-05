@@ -45,6 +45,7 @@
 							<span class="glyphicon glyphicon-user"></span> {{$user->username}} <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu">
+							<li><a href="{{url().'/upload'}}">นำเข้าข้อมูล...</a></li>
 							<li><a href="{{url().'/downloads'}}">ดาวน์โหลดข้อมูล...</a></li>
 							<li><a href="{{url().'/change_password'}}">เปลี่ยนรหัสผ่าน</a></li>
 							<li><a href="{{url().'/logout'}}">ออกจากระบบ</a></li>
