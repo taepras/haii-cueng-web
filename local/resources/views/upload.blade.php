@@ -12,6 +12,12 @@
 	<div class="col-sm-6 col-sm-offset-3">
 		<h4><b>อัพโหลดข้อมูล</b></h4>
 		<br>
+		@if(isset($success) && $success)
+			<div class="alert alert-success" role="alert">นำเข้าข้อมูลเรียบร้อย</div>
+		@endif
+		@if(isset($error))
+			<div class="alert alert-danger" role="alert">{{$error}}</div>
+		@endif
 		<form role="form" class="form-horizontal" method="post" action="{{url().'/upload'}}" enctype="multipart/form-data">
 			{{csrf_field()}}
 			<div class="form-group">
@@ -20,8 +26,8 @@
 					<input type="file" name="file">
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary btn-block">
-				อัพโหลด .csv
+			<button type="submit" class="btn btn-primary btn-block" id="upload-file">
+				นำเข้าข้อมูล
 			</a>
 		</form>
 	</div>
@@ -54,6 +60,11 @@ $(document).ready(function(){
 		$(this).addClass('disabled');
 		// $('#stations-icon').hide();
 		// $('#stations-loader').show();
+	});
+
+	$('#upload-file').click(function(){
+		$(this).addClass('disabled');
+		$(this).html('กำลังประมวลผล กรุณารอสักครู่ <img src="{{asset('img/loader.gif')}}">');
 	});
 });
 </script>

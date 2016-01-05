@@ -73,19 +73,6 @@
 		<h1 class="huge-text" id="f1_score-value">{{round($f1_score * 100,2)}}%</h1>
 		<p>F1 Score เฉลี่ยของสถานีนี้จากการทดสอบ <b>{{round($info_station['f1_score'], 2)}}%</b></p>
 	</div>
-	{{-- <div class="col-sm-3 text-center">
-		<h4><b>ค่าสถิติของส่วนที่เลือก</b></h4>
-		<p>F1 Score</p>
-		<h1 class="huge-text">{{round($f1_score * 100,2)}}%</h1>
-		<hr>
-		<p>Root Mean Square Error (RMSE)</p>
-		<h1 class="huge-text">{{round($rmse, 2)}}</h1>
-		<p>มิลลิเมตร</p>
-		<hr>
-
-		<p>F1 Score เฉลี่ยของสถานีนี้ <b>{{$info_station['f1_score']}}%</b></p>
-		<p>RMSE เฉลี่ยของสถานีนี้ <b>{{$info_station['rmse']}} mm</b></p>
-	</div> --}}
 </div>
 <div class="row">
 	<div class="col-sm-12">

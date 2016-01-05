@@ -346,14 +346,62 @@ class PagesController extends Controller
 
 		if (Input::hasFile('file')){
 
+			$cfsv2ColumnNames = [
+				"station_id","date",
+
+				"gph200_0","gph850_0","h200_0","h850_0","p_msl_0","p_sfl_0",
+				"temp200_0","temp850_0","u200_0","u850_0","v200_0","v850_0",
+
+				"gph200_6","gph850_6","h200_6","h850_6","p_msl_6","p_sfl_6",
+				"temp200_6","temp850_6","u200_6","u850_6","v200_6","v850_6",
+
+				"gph200_12","gph850_12","h200_12","h850_12","p_msl_12","p_sfl_12",
+				"temp200_12","temp850_12","u200_12","u850_12","v200_12","v850_12",
+
+				"gph200_18","gph850_18","h200_18","h850_18","p_msl_18","p_sfl_18",
+				"temp200_18","temp850_18","u200_18","u850_18","v200_18","v850_18",
+
+				"actual_rainfall","predict_rainfall"
+			];
+
 			$file = Input::file('file');
 			$name = time() . '-' . $file->getClientOriginalName();
-			// Moves file to folder on server
-			$file->move(public_path() . '/uploads/', $name);
+			$new_path = public_path() . '/uploads/';
+			$file->move($new_path, $name);
 
-			return var_dump($file); // return for testing
+			$cfs_col_string = implode(",", $cfsv2ColumnNames);
 
+			$csv = fopen($new_path . $name, 'r');
+			$csv_col_names = fgetcsv($csv);
+			$id_index = array_search("id", $csv_col_names);
+			if ($id_index !== false)
+				unset($csv_col_names[$id_index]);
+
+			$pdo = \DB::connection()->getPdo();
+
+			$rows_left = true;
+			while(!feof($csv)){
+				$var = fgetcsv($csv);
+				if ($var){
+					if ($id_index !== false)
+						unset($var[$id_index]);
+					$new_var = [];
+					foreach ($var as $key => $value) {
+						$new_var[$key] = $pdo->quote($value);
+					}
+
+					$q = 'insert into cfsv2s (' .
+						implode(",", $csv_col_names) .
+						') values (' .
+						implode(",", $new_var) .
+						')';
+					$pdo->query($q);
+				}
+			}
+
+			return view('upload')->with('user', $user)->with('success', true);
 	     }
-		return view('upload')->with('user', $user);
+
+		 return view('upload')->with('user', $user)->with('error', 'กรุณาเลือกไฟล์');
 	}
 }
