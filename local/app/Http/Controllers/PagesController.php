@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class PagesController extends Controller
 {
-	const DEFAULT_STATION = "455601";
+	const DEFAULT_STATION = "429201";
+	const DEFAULT_NUM_DAYS = 270;
 
 	public function main(){
 		$user = Auth::user();
@@ -74,7 +75,7 @@ class PagesController extends Controller
 				$date = $min_date;
 		}
 		$b = \App\CFSV2::where('station_id', '=', $station_id)->where('date', '=', $date)->first();
-		$variable_station = json_decode($b,true);
+		$variable_station = json_decode($b, true);
 		if(!$user && $variable_station){
 			foreach ($variable_station as $row) {
 				if(isset($row['actual_rainfall'])){
@@ -110,18 +111,18 @@ class PagesController extends Controller
 
 	public function viewForecastStation($station_id){
 		$user = Auth::user();
-		$start_date = Input::get('start_date');
 		$end_date = Input::get('end_date');
+		$start_date = Input::get('start_date');
 
 		$a = \App\StationInfo::where('station_id','=',$station_id)->first();
 		$info_station = json_decode($a, true);
 		$info_station['start_date'] = \App\CFSv2::where('station_id', '=', $station_id)->min('date');
 		$info_station['end_date']   = \App\CFSv2::where('station_id', '=', $station_id)->max('date');
 
-		if(!$start_date)
-			$start_date = $info_station['start_date'];
 		if(!$end_date)
 			$end_date = $info_station['end_date'];
+		if(!$start_date)
+			$start_date = date("Y-m-d", strtotime($end_date) - (self::DEFAULT_NUM_DAYS * 86400));
 
 		$b = \App\CFSV2::where('station_id','=',$station_id)->where('id','!=',0)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
 		$variable_station = json_decode($b,true);
@@ -170,10 +171,10 @@ class PagesController extends Controller
 		$info_station['start_date'] = \App\CFSv2::where('station_id', '=', $station_id)->min('date');
 		$info_station['end_date']   = \App\CFSv2::where('station_id', '=', $station_id)->max('date');
 
-		if(!$start_date)
-			$start_date = $info_station['start_date'];
 		if(!$end_date)
 			$end_date = $info_station['end_date'];
+		if(!$start_date)
+			$start_date = date("Y-m-d", strtotime($end_date) - (self::DEFAULT_NUM_DAYS * 86400));
 
 		$b = \App\CFSV2::where('station_id','=',$station_id)->whereDate('date','>=',$start_date)->whereDate('date','<=',$end_date)->get();
 		$variable_station = json_decode($b,true);
@@ -340,11 +341,13 @@ class PagesController extends Controller
 	}
 
 	public function postUpload(){
+
 		$user = Auth::user();
 		if(!$user)
 			return redirect('/login');
 
 		if (Input::hasFile('file')){
+			set_time_limit ( 600 );
 			$cfsv2ColumnNames = [
 				"station_id","date",
 
@@ -362,6 +365,7 @@ class PagesController extends Controller
 
 				"actual_rainfall","predict_rainfall"
 			];
+
 			$file = Input::file('file');
 			$name = time() . '-' . $file->getClientOriginalName();
 			$new_path = public_path() . '/uploads/';
@@ -371,32 +375,38 @@ class PagesController extends Controller
 
 			$csv = fopen($new_path . $name, 'r');
 			$csv_col_names = fgetcsv($csv);
-			$id_index = array_search("id", $csv_col_names);
-			if ($id_index !== false)
-				unset($csv_col_names[$id_index]);
+
+			$col_index = [];
+			for($i = 0; $i < count($cfsv2ColumnNames); $i++){
+				$col_index[$i] = array_search($cfsv2ColumnNames[$i], $csv_col_names);
+			}
+			$date_index = array_search("date", $csv_col_names);
 
 			$pdo = \DB::connection()->getPdo();
 
-			$rows_left = true;
 			while(!feof($csv)){
 				$var = fgetcsv($csv);
 				if ($var){
-					if ($id_index !== false)
-						unset($var[$id_index]);
 					$new_var = [];
-					foreach ($var as $key => $value) {
-						$new_var[$key] = $pdo->quote($value);
+
+					for($i = 0; $i < count($cfsv2ColumnNames); $i++){
+						if($i == 1) // date
+							$new_var[$i] = $pdo->quote(date("Y-m-d", strtotime($var[$col_index[$i]]))); //date
+						else
+							$new_var[$i] = $pdo->quote($col_index[$i] !== false ? $var[$col_index[$i]] : null);
 					}
 
 					$q = 'insert into cfsv2s (' .
-						implode(",", $csv_col_names) .
+						implode(",", $cfsv2ColumnNames) .
 						') values (' .
 						implode(",", $new_var) .
 						')';
 					$pdo->query($q);
 				}
 			}
-
+			try{
+				unlink($new_path . $name);
+			}catch(Exception $e){}
 			return view('upload')->with('user', $user)->with('success', true);
 	     }
 

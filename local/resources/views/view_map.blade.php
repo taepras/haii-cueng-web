@@ -272,8 +272,8 @@ var myChart = new dimple.chart(svg, data);
 myChart.setMargins("10px", "20px", "0px", "0px");
 var x = myChart.addMeasureAxis("x", "longitude");
 var y = myChart.addMeasureAxis("y", "latitude");
-var z = myChart.addMeasureAxis("z", "rainfall");
-var c = myChart.addMeasureAxis("c", "rainfall");
+var z = myChart.addMeasureAxis("z", "predict_rainfall");
+var c = myChart.addMeasureAxis("c", "predict_rainfall");
 
 myChart.defaultColors = [
 	new dimple.color("#459cea", "#459cea", 1), // blue
